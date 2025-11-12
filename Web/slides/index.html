@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTMLスライド</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="presentation">
+        <!-- プログレスバー -->
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+
+        <!-- スライドコンテナ -->
+        <div class="slides-container">
+            <!-- スライド 1 -->
+            <div class="slide active">
+                <h1>HTMLスライド</h1>
+                <p class="subtitle">キーボードで操作できるプレゼンテーション</p>
+                <p class="hint">矢印キー or スペースキーで次へ →</p>
+            </div>
+
+            <!-- スライド 2 -->
+            <div class="slide">
+                <h2>特徴</h2>
+                <ul class="feature-list">
+                    <li>シンプルで使いやすい</li>
+                    <li>キーボードナビゲーション対応</li>
+                    <li>レスポンシブデザイン</li>
+                    <li>プログレスバー表示</li>
+                </ul>
+            </div>
+
+            <!-- スライド 3 -->
+            <div class="slide">
+                <h2>操作方法</h2>
+                <div class="key-guide">
+                    <div class="key-item">
+                        <span class="key">→</span>
+                        <span class="key">↓</span>
+                        <span class="key">Space</span>
+                        <p>次のスライドへ</p>
+                    </div>
+                    <div class="key-item">
+                        <span class="key">←</span>
+                        <span class="key">↑</span>
+                        <p>前のスライドへ</p>
+                    </div>
+                    <div class="key-item">
+                        <span class="key">Home</span>
+                        <p>最初のスライドへ</p>
+                    </div>
+                    <div class="key-item">
+                        <span class="key">End</span>
+                        <p>最後のスライドへ</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- スライド 4 -->
+            <div class="slide">
+                <h2>コードの例</h2>
+                <pre><code>&lt;div class="slide"&gt;
+    &lt;h2&gt;タイトル&lt;/h2&gt;
+    &lt;p&gt;コンテンツ&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                <p>スライドを追加するには、<code>.slide</code> クラスの div を追加するだけ！</p>
+            </div>
+
+            <!-- スライド 5 -->
+            <div class="slide">
+                <h2>カスタマイズ可能</h2>
+                <p>CSS を編集することで、自由にデザインを変更できます</p>
+                <ul>
+                    <li>色</li>
+                    <li>フォント</li>
+                    <li>アニメーション</li>
+                    <li>レイアウト</li>
+                </ul>
+            </div>
+
+            <!-- スライド 6 -->
+            <div class="slide">
+                <h2>完了！</h2>
+                <p class="large-text">これで基本的な HTML スライドの完成です</p>
+                <p>自由に編集してお使いください 🎉</p>
+            </div>
+        </div>
+
+        <!-- ナビゲーション -->
+        <div class="navigation">
+            <button class="nav-btn prev-btn" aria-label="前のスライド">‹</button>
+            <span class="slide-number">
+                <span class="current">1</span> / <span class="total">6</span>
+            </span>
+            <button class="nav-btn next-btn" aria-label="次のスライド">›</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
