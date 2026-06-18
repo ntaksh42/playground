@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI技術動向レポート 2026-06-18</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --card2: #1e2130;
+    --accent: #6c63ff;
+    --accent2: #00c896;
+    --accent3: #ff6b6b;
+    --accent4: #ffa94d;
+    --text: #e0e0e0;
+    --text-muted: #8b8fa8;
+    --border: #2a2d3e;
+    --tag-bg: #252840;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Hiragino Sans', 'Meiryo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    background: linear-gradient(135deg, #1a1d27 0%, #252840 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 20px 32px;
+    text-align: center;
+  }
+  .report-header .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .report-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .report-header .period {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+
+  /* ── EXECUTIVE SUMMARY ── */
+  .summary-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 32px 0 24px;
+  }
+  .summary-box h2 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .summary-box p { font-size: 14px; color: var(--text); margin-bottom: 8px; }
+  .summary-box p:last-child { margin-bottom: 0; }
+
+  /* ── SECTION HEADERS ── */
+  .section { margin-top: 40px; }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-number {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .num-purple { background: var(--accent); color: #fff; }
+  .num-green  { background: var(--accent2); color: #0f1117; }
+  .num-red    { background: var(--accent3); color: #fff; }
+  .section-title h2 { font-size: 18px; font-weight: 700; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: var(--accent); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .card-title { font-size: 15px; font-weight: 700; flex: 1; min-width: 0; }
+  .card-meta { display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0; }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 9px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--tag-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .tag-new    { background: #1a2e3b; color: var(--accent2); border-color: var(--accent2); }
+  .tag-fix    { background: #2e1a1a; color: var(--accent3); border-color: var(--accent3); }
+  .tag-imp    { background: #2a2215; color: var(--accent4); border-color: var(--accent4); }
+  .tag-ver    { background: #1f1a2e; color: var(--accent); border-color: var(--accent); }
+
+  .card-body { font-size: 13.5px; color: var(--text); }
+  .card-body ul { padding-left: 18px; }
+  .card-body li { margin-bottom: 5px; }
+  .card-body li:last-child { margin-bottom: 0; }
+
+  .impact-box {
+    background: #191c2a;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+  .impact-box strong { color: var(--accent); }
+
+  /* ── VERSION TIMELINE ── */
+  .timeline { position: relative; padding-left: 20px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+  .tl-item { position: relative; margin-bottom: 24px; }
+  .tl-dot {
+    position: absolute;
+    left: -18px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .tl-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    letter-spacing: .5px;
+  }
+  .tl-ver { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+
+  /* ── ARTICLE CARD ── */
+  .article-card { display: flex; gap: 16px; flex-wrap: wrap; }
+  .article-badge {
+    width: 48px; height: 48px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+    background: var(--tag-bg);
+  }
+  .article-content { flex: 1; min-width: 200px; }
+  .article-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .article-title a { color: var(--accent2); text-decoration: none; }
+  .article-title a:hover { text-decoration: underline; }
+  .article-summary { font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+  .article-for { font-size: 12px; color: var(--accent4); }
+
+  /* ── NEWS CARD ── */
+  .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 640px) { .news-grid { grid-template-columns: 1fr; } }
+  .news-card {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 13px;
+  }
+  .news-card:hover { border-color: var(--accent3); }
+  .news-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px; }
+  .news-date { font-size: 11px; color: var(--text-muted); }
+  .news-fact { color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .news-implication { color: var(--text-muted); font-size: 12px; border-top: 1px solid var(--border); padding-top: 7px; line-height: 1.5; }
+  .news-implication::before { content: '→ '; color: var(--accent4); font-weight: 700; }
+
+  /* ── SOURCES ── */
+  .sources {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .sources h2 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+  .source-list { list-style: none; }
+  .source-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .source-list li:last-child { border-bottom: none; }
+  .source-list a { color: var(--accent); text-decoration: none; word-break: break-all; }
+  .source-list a:hover { text-decoration: underline; }
+  .source-num { color: var(--text-muted); margin-right: 6px; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 32px 0 0;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<!-- ────────── HEADER ────────── -->
+<header class="report-header">
+  <p class="label">AI Weekly Intelligence Report</p>
+  <h1>AI技術動向レポート</h1>
+  <p class="period">対象期間：2026年6月11日（木）〜 2026年6月18日（水）｜発行日：2026-06-18</p>
+</header>
+
+<div class="container">
+
+  <!-- ────────── EXECUTIVE SUMMARY ────────── -->
+  <div class="summary-box">
+    <h2>Executive Summary</h2>
+    <p>今週最大のニュースは <strong>SpaceXによるCursorの600億ドル買収（6/16）</strong> と、<strong>トランプ政権によるAnthropicのFable 5・Mythos 5モデルへの輸出規制（6/12）</strong> の2件。前者はAI×宇宙テックの融合加速を示し、後者はAIモデルが初めて輸出規制対象となった歴史的先例となった。</p>
+    <p>G7サミット（6/15〜17、フランス・エビアン）ではAIの国際標準フォーラム設立が議論され、欧米・日本間の規制アプローチの差異が浮き彫りになった。</p>
+    <p>ツール面では <strong>Claude Code が3バージョン（v2.1.178〜181）</strong> をリリース。<code>Tool(param:value)</code> によるきめ細かい権限制御や <code>/config</code> のインライン設定変更など、大規模エージェント運用を意識した改善が際立つ。</p>
+    <p>国内技術コミュニティでは <strong>Loop Engineering</strong>（AIエージェントを自律ループで動かすパラダイム）が爆発的に拡散し、Zenn・Qiita・DevelopersIOで多数の実装記事が掲載された。</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 1: Claude Code / Codex
+  ═══════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">
+      <div class="section-number num-purple">1</div>
+      <h2>Claude Code / Codex 機能追加</h2>
+    </div>
+
+    <!-- Sub: Claude Code -->
+    <div class="card" style="margin-bottom:8px;">
+      <div class="card-header">
+        <div class="card-title">Claude Code — 今週のリリース概要</div>
+        <div class="card-meta">
+          <span class="tag tag-ver">v2.1.178 〜 v2.1.181</span>
+        </div>
+      </div>
+      <div class="card-body" style="font-size:13px; color:var(--text-muted);">
+        出典：<a href="https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md" style="color:var(--accent);">github.com/anthropics/claude-code CHANGELOG.md</a> ／ <a href="https://code.claude.com/docs/en/changelog" style="color:var(--accent);">code.claude.com/docs/en/changelog</a>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- v2.1.181 -->
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2026-06-17</div>
+        <div class="card" style="margin-left:0;">
+          <div class="card-header">
+            <div class="card-title">v2.1.181</div>
+            <div class="card-meta">
+              <span class="tag tag-new">新機能 3件</span>
+              <span class="tag tag-imp">改善 6件</span>
+              <span class="tag tag-fix">修正 30+件</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="font-weight:700; margin-bottom:6px; color:var(--accent2);">新機能</p>
+            <ul>
+              <li><code>/config key=value</code> 構文の追加 — インタラクティブ・<code>-p</code>・Remote Control すべてで有効。設定変更をコマンド一発で完結。</li>
+              <li><code>sandbox.allowAppleEvents</code> — macOS でサンドボックス内コマンドが Apple Events を送信可能に。</li>
+              <li><code>CLAUDE_CLIENT_PRESENCE_FILE</code> 環境変数 — マーカーファイルを指すと在席中のモバイルプッシュ通知を抑制。</li>
+            </ul>
+            <div class="impact-box"><strong>実務インパクト：</strong><code>/config thinking=false</code> のように推論モードをその場で切り替えられるため、デバッグ中の高コスト推論を即座に止められる。</div>
+
+            <p style="font-weight:700; margin:12px 0 6px; color:var(--accent4);">改善</p>
+            <ul>
+              <li>Bun ランタイムを 1.4 にアップグレード</li>
+              <li>長いパラグラフのストリーミング改善（行ごとに逐次表示）</li>
+              <li>API 接続断の自動リトライ（thinking 中の切断も対象）</li>
+              <li>サブエージェントパネル：30秒後に自動非表示、最大5行表示</li>
+              <li>MCP OAuth ブラウザページのスタイル改善・成功後の自動クローズ</li>
+              <li>フルスクリーンモードのURL開封に Cmd+click（macOS）/ Ctrl+click を要求</li>
+            </ul>
+            <div class="impact-box"><strong>実務インパクト：</strong>長時間セッションでの接続断が自動復旧されるため、夜間・長時間バッチ処理の信頼性が大幅向上。</div>
+
+            <p style="font-weight:700; margin:12px 0 6px; color:var(--accent3);">主要バグ修正（抜粋）</p>
+            <ul>
+              <li>カスタム <code>ANTHROPIC_BASE_URL</code> / Foundry でプロンプトキャッシュが読み込まれない問題</li>
+              <li>ネットワークドライブ・クラウド同期フォルダで Write/Edit が 0 バイトになる問題</li>
+              <li>macOS で <code>open</code> / <code>osascript</code> が error -600 で失敗する問題</li>
+              <li>新鮮な環境で起動に余分な ~120ms かかる性能回帰</li>
+              <li>劣化ネットワークで最大 15 秒間ターミナルが空白になる起動ブロック</li>
+              <li>macOS で Spotlight が再インデックス中に TUI がフリーズする問題</li>
+              <li>30日トランスクリプトクリーンアップ中に長期アイドルセッションが履歴を失う問題</li>
+              <li><code>AskUserQuestion</code> マルチセレクトで "Other" の入力が黙って落ちる問題</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- v2.1.179 -->
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--accent4);"></div>
+        <div class="tl-date">2026-06-16</div>
+        <div class="card" style="margin-left:0;">
+          <div class="card-header">
+            <div class="card-title">v2.1.179</div>
+            <div class="card-meta">
+              <span class="tag tag-imp">改善 1件</span>
+              <span class="tag tag-fix">修正 8件</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="font-weight:700; margin-bottom:6px; color:var(--accent4);">改善</p>
+            <ul>
+              <li>リモートセッションのプラグイン読み込み性能を改善</li>
+            </ul>
+            <p style="font-weight:700; margin:10px 0 6px; color:var(--accent3);">主要バグ修正</p>
+            <ul>
+              <li>ストリーミング途中の接続断：部分レスポンスが保持されるように修正</li>
+              <li>WSL2 / Windows Terminal・VS Code でのマウスホイールスクロール修正</li>
+              <li>Linux で大規模ディレクトリツリーへの <code>denyRead</code>/<code>allowRead</code> glob がセッションを使用不能にする問題</li>
+              <li>ウェルカムスクリーンで複数のプロモバナーが重なる問題</li>
+              <li>Ctrl+O でサブエージェントのトランスクリプトが表示されない問題</li>
+            </ul>
+            <div class="impact-box"><strong>実務インパクト：</strong>大規模モノレポで sandbox glob が原因でセッションがハングする致命的不具合の修正。本番環境での安定稼働に直結。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v2.1.178 -->
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--accent2);"></div>
+        <div class="tl-date">2026-06-15</div>
+        <div class="card" style="margin-left:0;">
+          <div class="card-header">
+            <div class="card-title">v2.1.178</div>
+            <div class="card-meta">
+              <span class="tag tag-new">新機能 3件</span>
+              <span class="tag tag-imp">改善 6件</span>
+              <span class="tag tag-fix">修正 10+件</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="font-weight:700; margin-bottom:6px; color:var(--accent2);">新機能</p>
+            <ul>
+              <li><code>Tool(param:value)</code> 構文 — パーミッションルールでツールの入力パラメータを照合（例：<code>Agent(model:opus)</code> で Opus サブエージェントをブロック）</li>
+              <li>ネストされた <code>.claude/skills</code> ディレクトリのスキルが読み込まれるように（衝突時は <code>&lt;dir&gt;:&lt;name&gt;</code> 形式）</li>
+              <li>ネストされた <code>.claude/</code> ディレクトリ：agent・workflow・output-style の衝突時に最も近いものが優先</li>
+            </ul>
+            <div class="impact-box"><strong>実務インパクト：</strong><code>Tool(param:value)</code> により、Opus モデルを使うサブエージェントだけを選択的にブロックするなど、コスト管理の粒度が一段細かくなった。</div>
+
+            <p style="font-weight:700; margin:12px 0 6px; color:var(--accent4);">改善</p>
+            <ul>
+              <li>オートモード：サブエージェント起動前にクラシファイアで評価</li>
+              <li><code>/doctor</code> を統一フラットツリー表示に改善・コマンド名をハイライト</li>
+              <li>ワークフロープロンプトのキーワードを紫シマーでハイライト</li>
+              <li>Remote Control のエラーメッセージを改善（フッターに永続表示）</li>
+              <li><code>/bug</code> コマンド：送信前に説明必須化</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+
+    <!-- Sub: Codex -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">OpenAI Codex — 2026年6月アップデート</div>
+        <div class="card-meta">
+          <span class="tag">2026年6月</span>
+        </div>
+      </div>
+      <div class="card-body" style="font-size:12.5px; color:var(--text-muted); margin-bottom:10px;">
+        ※ 各機能の正確な公開日は公式 Changelog（<a href="https://developers.openai.com/codex/changelog" style="color:var(--accent);">developers.openai.com/codex/changelog</a>）で確認済みだが、一部は6月11〜18日の特定日が未確認。出典：<a href="https://releasebot.io/updates/openai/codex" style="color:var(--accent);">releasebot.io/updates/openai/codex</a>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><span class="tag tag-new" style="margin-right:4px;">新機能</span><strong>Codex Sites（プレビュー）</strong> — Webアプリ・ダッシュボード・内部ツールをCodex App から直接作成・デプロイ・検査可能に。<div class="impact-box" style="margin-top:5px;"><strong>実務インパクト：</strong>フロントエンド不要でプロトタイプを数分公開。社内ツールのスピードを大幅短縮。</div></li>
+          <li style="margin-top:10px;"><span class="tag tag-new" style="margin-right:4px;">新機能</span><strong>Computer Use 拡張</strong> — EEA・英国・スイス向けに macOS・Windows での Computer Use が解放。デスクトップアプリを画面認識＋マウス操作で自動化。</li>
+          <li style="margin-top:10px;"><span class="tag tag-new" style="margin-right:4px;">新機能</span><strong>Browser Use Developer Mode</strong> — Chrome DevTools Protocol（CDP）によるパフォーマンスプロファイリング・ネットワークトラフィック・コンソールエラーのデバッグ。</li>
+          <li style="margin-top:10px;"><span class="tag tag-new" style="margin-right:4px;">新機能</span><strong>Memories</strong> — ワークフロー・技術スタック・リポジトリ規約を記憶。繰り返し同じ指示を打つ手間がなくなる。</li>
+          <li style="margin-top:10px;"><span class="tag tag-new" style="margin-right:4px;">新機能</span><strong>Chrome Extension</strong> — ログイン済みの Chrome コンテキストが必要なタスクを複数タブで裏方実行。</li>
+          <li style="margin-top:10px;"><span class="tag tag-imp" style="margin-right:4px;">改善</span>メッセージ・プランでの <strong>LaTeX レンダリング</strong> 対応</li>
+          <li style="margin-top:10px;"><span class="tag tag-imp" style="margin-right:4px;">改善</span><strong>Codex プロフィール画面</strong>：使用状況統計・トークンアクティビティチャート追加</li>
+          <li style="margin-top:10px;"><span class="tag tag-imp" style="margin-right:4px;">改善</span>実行中スレッド・キュー済みプロンプト・サイドチャット・サブエージェントのステータスインジケーター改善</li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 2: TECH ARTICLES
+  ═══════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">
+      <div class="section-number num-green">2</div>
+      <h2>AI技術記事（Zenn / Qiita / DevelopersIO）</h2>
+    </div>
+
+    <!-- Article 1 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">🔄</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">Zenn</span>
+            <span class="tag tag-new">2026-06-16</span>
+            <span class="tag">確認済み日付</span>
+          </div>
+          <div class="article-title">
+            <a href="https://zenn.dev/ino_h/articles/2026-06-16-loop-engineering-goal" target="_blank">Loop Engineeringの組み方：Claude Code /goal で「自走するループ」を設計する</a>
+          </div>
+          <div class="article-summary">
+            ▶ Claude Code の <code>/goal</code> と <code>/loop</code> コマンドを組み合わせ、「指示を打ち込む」のではなく「ループを設計する」パラダイムを実装例付きで解説。L1（報告のみ）→ L2（補助修正）→ L3（完全自律）の3段階自律度で設計する手順を示す。<br>
+            ▶ 6つの具体ループ実装（bash ループ・Agent SDK hooks・GitHub Actions 常駐）をコードと実際の出力付きで紹介。<br>
+            ▶ Boris Cherny（Anthropic）の「もうプロンプトを書くな」という提言を実際のコードで追体験できる構成。
+          </div>
+          <div class="article-for">👤 対象：Claude Code を業務自動化に活用したいバックエンド・DevOps エンジニア</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 2 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">💰</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">Zenn</span>
+            <span class="tag tag-new">2026-06-11</span>
+            <span class="tag">確認済み日付</span>
+          </div>
+          <div class="article-title">
+            <a href="https://zenn.dev/dx_pm_product/articles/ai-token-cost-reduction-guide" target="_blank">Claude Codeを含むAIツールのコスト削減を本気で整理する</a>
+          </div>
+          <div class="article-summary">
+            ▶ Claude Code・OpenAI API などのトークンコスト削減テクニックを「Caveman Prompt」「RTK（Runtime Token Kompression）」などの命名で体系化。<br>
+            ▶ プロンプトキャッシュ活用・コンテキスト圧縮・モデル選択の最適化を数値比較付きで解説。<br>
+            ▶ AIツールが増えるほどトークンコストが積み重なる現場向けに、削減率の計測方法まで言及。
+          </div>
+          <div class="article-for">👤 対象：AIツールの月次コストが無視できなくなってきたエンジニア・プロダクトマネージャー</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 3 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">🧠</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">Zenn</span>
+            <span class="tag">日付未確認</span>
+          </div>
+          <div class="article-title">
+            <a href="https://zenn.dev/biscuit/articles/llm-wiki-claude-code-personal-knowledge-base" target="_blank">AIに「自分」を記憶させる仕組みを作った：LLM WikiをClaude Codeで実装した話</a>
+          </div>
+          <div class="article-summary">
+            ▶ Claude Code Routines（2026年4月 Anthropic が研究プレビュー公開）を使い、個人のナレッジベースを6時間ごとに自動取り込む「LLM Wiki」を実装。<br>
+            ▶ スケジュール実行・API 呼び出し・GitHub Events トリガーの組み合わせによるマネージドクラウド自動化の実践例。<br>
+            ▶ Claude がセッションをまたいで「自分のこと」を記憶し続ける仕組みの構築手順を公開。
+          </div>
+          <div class="article-for">👤 対象：Claude Code を個人の「第2の脳」として育てたいエンジニア</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 4 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">⚙️</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">Zenn</span>
+            <span class="tag">日付未確認</span>
+          </div>
+          <div class="article-title">
+            <a href="https://zenn.dev/ai_nexus/articles/ai-agents-design-patterns" target="_blank">AIエージェント実装完全ガイド2026 ─ 自律型AI開発の設計パターンとベストプラクティス</a>
+          </div>
+          <div class="article-summary">
+            ▶ ReAct・Self-Reflection・Tool Use といった 2026年時点で確立済みの設計パターンを LangChain・CrewAI・Claude API 実装例で体系解説。<br>
+            ▶ エージェント出力の4要素（instruction / model / memory / tools）を軸に、マルチエージェント並列実行の実装まで踏み込んだ実践ガイド。<br>
+            ▶「完璧なアーキテクチャより動くものを早く作り、段階的に改善する」という設計哲学が通底。
+          </div>
+          <div class="article-for">👤 対象：エージェント開発を始めるが何から設計すべきか迷っているエンジニア全般</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 5 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">🔍</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">Zenn</span>
+            <span class="tag">日付未確認</span>
+          </div>
+          <div class="article-title">
+            <a href="https://zenn.dev/toshipon/articles/llm-observability-for-indie-dev" target="_blank">LLM を使って開発するなら、可観測性を最初から考えておくべきだった</a>
+          </div>
+          <div class="article-summary">
+            ▶ Claude Code 等で開発速度が上がる一方、「なぜその挙動になったか」が追えなくなる問題を LLM 可観測性（Observability）で解決するアプローチを提案。<br>
+            ▶ トレース・ログ・メトリクス各レイヤーの計装方法と、実際のデバッグ事例を紹介。<br>
+            ▶ AI 駆動開発後の「ブラックボックス化」というよくある問題に対する具体的な対処法を示す。
+          </div>
+          <div class="article-for">👤 対象：Claude Code や Copilot で生産性が上がったが、障害時の原因調査に困っているエンジニア</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 6 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">📰</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">Qiita</span>
+            <span class="tag tag-new">2026-06-17</span>
+            <span class="tag">確認済み日付</span>
+          </div>
+          <div class="article-title">
+            <a href="https://qiita.com/lhjjjk4/items/f7b637dc4fb5dd65d9d1" target="_blank">AI Daily Digest: 2026年6月17日 — SpaceXがCursorを600億ドルで買収、G7 AIサミット</a>
+          </div>
+          <div class="article-summary">
+            ▶ SpaceX による Cursor 600億ドル買収（6/16）・G7 AI サミット（6/15〜17）・Anthropic 輸出規制（6/12）を1記事でまとめた時事ダイジェスト。<br>
+            ▶ 規制・M&A・国際政治が「AI コーディングツール市場」に与える影響を日本語で整理。<br>
+            ▶ 各トピックに一次情報リンクを付与。技術記事ではなくニュース集約型だが網羅性が高い。
+          </div>
+          <div class="article-for">👤 対象：英語一次情報を追いきれないが業界動向は把握したいエンジニア・マネージャー</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article 7 -->
+    <div class="card">
+      <div class="article-card">
+        <div class="article-badge">🔁</div>
+        <div class="article-content">
+          <div class="card-meta" style="margin-bottom:6px;">
+            <span class="tag">DevelopersIO</span>
+            <span class="tag">2026年6月</span>
+          </div>
+          <div class="article-title">
+            <a href="https://dev.classmethod.jp/articles/claude-loop-engineering-practice/" target="_blank">Loop EngineeringをClaudeを使って実践してみた（DevelopersIO）</a>
+          </div>
+          <div class="article-summary">
+            ▶ Boris Cherny（Anthropic）の Loop Engineering 概念を Classmethod のエンジニアが実際に試した検証記事。bash ループから Agent SDK hooks、GitHub Actions 常駐まで6実装例を「動くコード＋実際の出力＋限界」セットで公開。<br>
+            ▶ Loop の6プリミティブ（スケジューリング・Worktrees・Skills・MCP・Sub-agents・Memory/State）を図解。<br>
+            ▶ L1/L2/L3 の段階的自律度モデルで、どのレベルから始めるかの判断軸を提供。
+          </div>
+          <div class="article-for">👤 対象：Loop Engineering を「ポエムでなく実動コード」で理解したいエンジニア</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTION 3: AI NEWS
+  ═══════════════════════════════════════ -->
+  <section class="section">
+    <div class="section-title">
+      <div class="section-number num-red">3</div>
+      <h2>AIニュース（企業動向・世界情勢）</h2>
+    </div>
+
+    <div class="news-grid">
+
+      <!-- News 1 -->
+      <div class="news-card">
+        <div class="news-meta">
+          <div>
+            <span class="tag tag-fix">M&amp;A</span>
+            <span class="tag" style="margin-left:4px;">宇宙×AI</span>
+          </div>
+          <div class="news-date">2026-06-16</div>
+        </div>
+        <div class="news-fact">
+          <strong>SpaceX、AIコーディングツール Cursor（Anysphere）を600億ドルの全株式交換で買収合意。</strong>
+          SpaceX が2026年4月に取得済みのオプション（約100億ドルのパートナー契約 or 600億ドル買収）を行使。Cursor の年換算売上は約26億ドル。SpaceX IPO（750億ドル・史上最大）の4日後に発表。
+          <br><small style="color:var(--text-muted);">出典：<a href="https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/" style="color:var(--accent);">TechCrunch</a>｜<a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" style="color:var(--accent);">CNBC</a></small>
+        </div>
+        <div class="news-implication">AIコーディング市場にSpaceX/xAI 陣営が参入。Anthropic・OpenAI 依存からの脱却を図る独自モデル開発が加速すると見られ、競合各社の戦略再考を迫る可能性がある。</div>
+      </div>
+
+      <!-- News 2 -->
+      <div class="news-card">
+        <div class="news-meta">
+          <div>
+            <span class="tag tag-fix">輸出規制</span>
+            <span class="tag" style="margin-left:4px;">安全保障</span>
+          </div>
+          <div class="news-date">2026-06-12</div>
+        </div>
+        <div class="news-fact">
+          <strong>トランプ政権がAnthropicに輸出規制命令。Fable 5・Mythos 5 の全外国人アクセスを停止。</strong>
+          商務省が「別の企業が Mythos をジェイルブレイクした」との報告を受け、Fable 5・Mythos 5 を商業AIモデルとして初の輸出規制対象に指定。Anthropic は対応中に全ユーザーへのアクセスを一時停止。
+          <br><small style="color:var(--text-muted);">出典：<a href="https://www.axios.com/2026/06/12/anthropic-trump-mythos-fable-national-security" style="color:var(--accent);">Axios</a>｜<a href="https://www.nextgov.com/artificial-intelligence/2026/06/anthropic-suspends-top-ai-models-after-us-export-control-order/414173/" style="color:var(--accent);">Nextgov/FCW</a></small>
+        </div>
+        <div class="news-implication">商業展開済みAIへの輸出規制は史上初。今後フロンティアモデルが「デュアルユース兵器」と同等に扱われる前例となる可能性があり、グローバルなAI製品のリスク評価が根本的に変わる。</div>
+      </div>
+
+      <!-- News 3 -->
+      <div class="news-card">
+        <div class="news-meta">
+          <div>
+            <span class="tag">国際政治</span>
+            <span class="tag" style="margin-left:4px;">規制</span>
+          </div>
+          <div class="news-date">2026-06-15〜17</div>
+        </div>
+        <div class="news-fact">
+          <strong>G7サミット（仏エビアン）でAIの国際標準フォーラム設立が議論。OpenAI CEO が米主導の枠組みを提言。</strong>
+          AI CEOたちが首脳と会談し、先進AIモデルの国際標準フォーラムを米国が主導する案を提示（Sam Altman）。Macron はAnthropicへの輸出規制を「スイッチ一つで切れる危険性」として批判。
+          <br><small style="color:var(--text-muted);">出典：<a href="https://www.semafor.com/article/06/17/2026/ai-ceos-talk-global-standards-at-g7" style="color:var(--accent);">Semafor</a>｜<a href="https://www.cnbc.com/2026/06/17/g7-trump-ai-tech-leaders-openai-anthropic-google.html" style="color:var(--accent);">CNBC</a>｜<a href="https://fortune.com/2026/06/18/ai-chiefs-regulation-collaboration-g7-summit/" style="color:var(--accent);">Fortune</a></small>
+        </div>
+        <div class="news-implication">米主導の国際標準フォーラムが成立すれば EU AI Act と並行した2極構造となり、日本企業はどちらの基準に準拠するか戦略的判断を迫られる。</div>
+      </div>
+
+      <!-- News 4 -->
+      <div class="news-card">
+        <div class="news-meta">
+          <div>
+            <span class="tag">新モデル</span>
+            <span class="tag" style="margin-left:4px;">Microsoft</span>
+          </div>
+          <div class="news-date">2026-06-02（参考）</div>
+        </div>
+        <div class="news-fact">
+          <strong>Microsoft が自社初の基盤モデル2種をBuild 2026で発表：MAI-Code-1-Flash（コーディング）・MAI-Thinking-1（推論）。</strong>
+          ※今週の新リリースではないが、週間の議論を牽引した重要背景情報。MAI-Thinking-1は35B アクティブパラメータの MoE モデル、AIME 2026で94.5%。MAI-Code-1-Flash は Claude Haiku 4.5 を全コーディングベンチマークで上回り、SWE-Bench Pro で51.2% vs 35.2%（16点差）。
+          <br><small style="color:var(--text-muted);">出典：<a href="https://microsoft.ai/news/introducingmai-code-1-flash/" style="color:var(--accent);">Microsoft AI</a>｜<a href="https://www.neowin.net/news/microsoft-unveils-mai-thinking-1-reasoning-and-mai-code-1-coding-models/" style="color:var(--accent);">Neowin</a></small>
+        </div>
+        <div class="news-implication">Microsoft が OpenAI 技術なしで Anthropic モデルを超える性能を主張。AIコーディング市場で従来型パートナー関係からの脱却が鮮明になっており、Anthropic・OpenAI との競合が顕在化する。</div>
+      </div>
+
+      <!-- News 5 -->
+      <div class="news-card" style="grid-column: 1 / -1;">
+        <div class="news-meta">
+          <div>
+            <span class="tag">政策</span>
+            <span class="tag" style="margin-left:4px;">ホワイトハウス</span>
+          </div>
+          <div class="news-date">2026年6月（正確日付未確認）</div>
+        </div>
+        <div class="news-fact">
+          <strong>トランプ大統領が大統領令「Promoting Advanced Artificial Intelligence Innovation and Security」に署名。フロンティアAIを公開30日前に政府へ提供する自主的な枠組みを要求。</strong>
+          AI企業に対し、公開前の最先端モデルをサイバーセキュリティベンチマーク目的で連邦政府に提出するよう要請。また、脆弱性情報を共有する「AIサイバーセキュリティクリアリングハウス」の設立も指示。コロラド州 AI 法（6/30施行予定）を含む州レベル規制との並走が続く。
+          <br><small style="color:var(--text-muted);">出典：<a href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/" style="color:var(--accent);">White House</a>｜<a href="https://llm-stats.com/ai-news" style="color:var(--accent);">llm-stats.com</a></small>
+        </div>
+        <div class="news-implication">輸出規制とセットで見ると、米国はAIモデルを「国家資産」として管理する方向に本格転換しつつある。日本のAI企業が米国市場に依存する部分が多い場合、政府提出要件への対応が必要になる可能性がある。</div>
+      </div>
+
+    </div><!-- /news-grid -->
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SOURCES
+  ═══════════════════════════════════════ -->
+  <div class="sources">
+    <h2>全出典リスト</h2>
+    <ul class="source-list">
+      <li><span class="source-num">[1]</span><a href="https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md">GitHub – anthropics/claude-code CHANGELOG.md（v2.1.178〜181）</a></li>
+      <li><span class="source-num">[2]</span><a href="https://code.claude.com/docs/en/changelog">Claude Code Docs – Changelog（code.claude.com）</a></li>
+      <li><span class="source-num">[3]</span><a href="https://developers.openai.com/codex/changelog">OpenAI Codex Changelog（developers.openai.com）</a></li>
+      <li><span class="source-num">[4]</span><a href="https://releasebot.io/updates/openai/codex">Releasebot – Codex Updates June 2026</a></li>
+      <li><span class="source-num">[5]</span><a href="https://venturebeat.com/orchestration/openais-codex-update-lets-agents-build-interactive-enterprise-workspaces-via-sites-and-role-specific-plugins">VentureBeat – Codex Sites and role-specific plugins</a></li>
+      <li><span class="source-num">[6]</span><a href="https://zenn.dev/ino_h/articles/2026-06-16-loop-engineering-goal">Zenn – Loop Engineeringの組み方：Claude Code /goal で「自走するループ」を設計する（2026-06-16）</a></li>
+      <li><span class="source-num">[7]</span><a href="https://zenn.dev/dx_pm_product/articles/ai-token-cost-reduction-guide">Zenn – Claude Codeを含むAIツールのコスト削減を本気で整理する（2026-06-11）</a></li>
+      <li><span class="source-num">[8]</span><a href="https://zenn.dev/biscuit/articles/llm-wiki-claude-code-personal-knowledge-base">Zenn – AIに「自分」を記憶させる仕組みを作った：LLM WikiをClaude Codeで実装した話</a></li>
+      <li><span class="source-num">[9]</span><a href="https://zenn.dev/ai_nexus/articles/ai-agents-design-patterns">Zenn – AIエージェント実装完全ガイド2026</a></li>
+      <li><span class="source-num">[10]</span><a href="https://zenn.dev/toshipon/articles/llm-observability-for-indie-dev">Zenn – LLM を使って開発するなら、可観測性を最初から考えておくべきだった</a></li>
+      <li><span class="source-num">[11]</span><a href="https://qiita.com/lhjjjk4/items/f7b637dc4fb5dd65d9d1">Qiita – AI Daily Digest: 2026年6月17日（SpaceXがCursorを600億ドルで買収、G7 AIサミット）</a></li>
+      <li><span class="source-num">[12]</span><a href="https://dev.classmethod.jp/articles/claude-loop-engineering-practice/">DevelopersIO – Loop EngineeringをClaudeを使って実践してみた</a></li>
+      <li><span class="source-num">[13]</span><a href="https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/">TechCrunch – SpaceX to acquire Cursor for $60B（2026-06-16）</a></li>
+      <li><span class="source-num">[14]</span><a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html">CNBC – SpaceX to acquire AI coding startup Cursor for $60 billion（2026-06-16）</a></li>
+      <li><span class="source-num">[15]</span><a href="https://mlq.ai/news/spacex-acquires-ai-coding-startup-cursor-for-60-billion-in-all-stock-deal/">MLQ News – SpaceX Acquires Cursor for $60B All-Stock Deal</a></li>
+      <li><span class="source-num">[16]</span><a href="https://www.axios.com/2026/06/12/anthropic-trump-mythos-fable-national-security">Axios – Trump admin blocks foreign access to Anthropic's most powerful AI（2026-06-12）</a></li>
+      <li><span class="source-num">[17]</span><a href="https://www.nextgov.com/artificial-intelligence/2026/06/anthropic-suspends-top-ai-models-after-us-export-control-order/414173/">Nextgov/FCW – Anthropic suspends top AI models after U.S. export control order</a></li>
+      <li><span class="source-num">[18]</span><a href="https://cryptobriefing.com/anthropic-white-house-export-controls-ai-models/">Crypto Briefing – Anthropic navigates unprecedented White House request</a></li>
+      <li><span class="source-num">[19]</span><a href="https://www.semafor.com/article/06/17/2026/ai-ceos-talk-global-standards-at-g7">Semafor – AI CEOs pitch G7 leaders on global standards forum（2026-06-17）</a></li>
+      <li><span class="source-num">[20]</span><a href="https://www.cnbc.com/2026/06/17/g7-trump-ai-tech-leaders-openai-anthropic-google.html">CNBC – AI in spotlight at G7 as Trump, world leaders joined by tech chiefs（2026-06-17）</a></li>
+      <li><span class="source-num">[21]</span><a href="https://fortune.com/2026/06/18/ai-chiefs-regulation-collaboration-g7-summit/">Fortune – AI chiefs call for regulation collaboration at the G7 summit（2026-06-18）</a></li>
+      <li><span class="source-num">[22]</span><a href="https://worldreporter.com/g7-summit-2026-evian-france-ai-critical-minerals-global-economy/">World Reporter – G7 Summit 2026 in Évian, France</a></li>
+      <li><span class="source-num">[23]</span><a href="https://microsoft.ai/news/introducingmai-code-1-flash/">Microsoft AI – Introducing MAI-Code-1-Flash</a></li>
+      <li><span class="source-num">[24]</span><a href="https://www.neowin.net/news/microsoft-unveils-mai-thinking-1-reasoning-and-mai-code-1-coding-models/">Neowin – Microsoft unveils MAI-Thinking-1 and MAI-Code-1</a></li>
+      <li><span class="source-num">[25]</span><a href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/">White House – Promoting Advanced Artificial Intelligence Innovation and Security</a></li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    <p>生成日時：2026-06-18｜調査範囲：2026年6月11日〜6月18日｜作成：Claude Code Routine（Automated Research Agent）</p>
+    <p style="margin-top:4px;">※ 「日付未確認」と記した記事は投稿日が検索結果から特定できなかったもの。出典URLは確認済み。</p>
+  </div>
+
+</div><!-- /container -->
+</body>
+</html>
