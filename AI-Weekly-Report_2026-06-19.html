@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI技術動向 週次レポート — 2026年6月12日〜6月19日</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #252838;
+    --border: #2e3148;
+    --accent: #6c63ff;
+    --accent2: #00c6a2;
+    --accent3: #f5a623;
+    --danger: #e05c5c;
+    --text: #e2e4f0;
+    --text-muted: #8b8fa8;
+    --text-dim: #5a5e78;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Layout */
+  .page-wrap { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* Header */
+  .report-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .report-header .label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .report-header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .report-header .period {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .report-header .period span {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 12px;
+    margin-left: 6px;
+  }
+
+  /* Executive Summary */
+  .exec-summary {
+    background: linear-gradient(135deg, #1a1d2f 0%, #1e2038 100%);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .exec-summary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--accent);
+    border-radius: 4px 0 0 4px;
+  }
+  .exec-summary h2 {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .exec-summary p {
+    color: var(--text);
+    font-size: 14.5px;
+    margin-bottom: 8px;
+  }
+  .exec-summary p:last-child { margin-bottom: 0; }
+
+  /* Section headers */
+  .section { margin-bottom: 52px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-claude { background: linear-gradient(135deg, #3b3f7a, #5c4fa0); }
+  .icon-article { background: linear-gradient(135deg, #1a4a3a, #1a7a5a); }
+  .icon-news { background: linear-gradient(135deg, #4a2a1a, #8a4a1a); }
+  .section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .section-header .count-badge {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 3px 10px;
+  }
+
+  /* Version Timeline */
+  .version-timeline { display: flex; flex-direction: column; gap: 0; }
+  .version-block {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 0 24px;
+    position: relative;
+  }
+  .version-block:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 129px;
+    top: 48px;
+    bottom: -16px;
+    width: 2px;
+    background: var(--border);
+  }
+  .version-block + .version-block { margin-top: 16px; }
+  .version-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 14px;
+    padding-right: 24px;
+    position: relative;
+  }
+  .version-meta::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: 22px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+  .version-tag {
+    font-size: 11px;
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(108,99,255,0.12);
+    border: 1px solid rgba(108,99,255,0.3);
+    border-radius: 4px;
+    padding: 3px 8px;
+  }
+  .version-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .version-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 16px;
+  }
+  .change-group { margin-top: 14px; }
+  .change-group:first-child { margin-top: 0; }
+  .change-type {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-bottom: 8px;
+  }
+  .type-new { background: rgba(0,198,162,0.15); color: var(--accent2); border: 1px solid rgba(0,198,162,0.3); }
+  .type-fix { background: rgba(224,92,92,0.12); color: #f07070; border: 1px solid rgba(224,92,92,0.25); }
+  .type-improve { background: rgba(245,166,35,0.12); color: #f5c060; border: 1px solid rgba(245,166,35,0.25); }
+  .change-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .change-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+  }
+  .change-item .title { font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .change-item .impact {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-left: 14px;
+    border-left: 2px solid var(--border);
+  }
+  .change-item .impact::before { content: '★ '; color: var(--accent3); }
+
+  /* Article cards */
+  .article-grid { display: flex; flex-direction: column; gap: 16px; }
+  .article-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    transition: border-color 0.2s;
+  }
+  .article-card:hover { border-color: var(--accent2); }
+  .article-card-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .article-num {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: rgba(0,198,162,0.15); border: 1px solid rgba(0,198,162,0.3);
+    color: var(--accent2); font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .article-card h3 { font-size: 15px; font-weight: 700; color: #fff; line-height: 1.4; }
+  .article-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .article-meta .tag {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 2px 8px;
+  }
+  .article-meta .date { color: var(--accent3); }
+  .article-summary {
+    font-size: 13.5px; color: var(--text); line-height: 1.65;
+    border-left: 3px solid var(--accent2);
+    padding-left: 12px;
+    margin-bottom: 10px;
+  }
+  .article-footer {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .article-audience {
+    font-size: 12px; color: var(--text-muted);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 10px;
+  }
+  .article-audience::before { content: '👤 '; }
+  .article-link { font-size: 12px; color: var(--accent); }
+
+  /* News cards */
+  .news-grid { display: flex; flex-direction: column; gap: 16px; }
+  .news-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0 16px;
+    transition: border-color 0.2s;
+  }
+  .news-card:hover { border-color: var(--accent3); }
+  .news-rank {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.25);
+    color: var(--accent3); font-size: 14px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .news-body h3 { font-size: 14.5px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .news-meta { display: flex; gap: 8px; font-size: 11px; margin-bottom: 10px; flex-wrap: wrap; }
+  .news-date { color: var(--accent3); }
+  .news-source { color: var(--text-muted); }
+  .news-fact {
+    font-size: 13px; color: var(--text);
+    margin-bottom: 6px;
+    padding-left: 12px;
+    border-left: 2px solid var(--border);
+  }
+  .news-fact strong { color: var(--accent2); }
+  .news-implication {
+    font-size: 12.5px; color: var(--text-muted);
+    padding: 7px 12px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+  .news-implication::before { content: '示唆 → '; font-weight: 700; color: var(--accent3); }
+  .news-link { font-size: 12px; color: var(--accent); margin-top: 8px; display: inline-block; }
+
+  /* Sources */
+  .sources-section {
+    margin-top: 48px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+  }
+  .sources-section h2 {
+    font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); font-weight: 700; margin-bottom: 16px;
+  }
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 8px;
+  }
+  .source-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  .source-item .src-num { color: var(--text-dim); margin-right: 6px; }
+  .source-item a { color: var(--text-muted); font-size: 11px; display: block; margin-top: 2px; word-break: break-all; }
+  .source-item a:hover { color: var(--accent); }
+
+  /* Notice */
+  .notice {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.2);
+    border-radius: var(--radius-sm); padding: 10px 14px;
+    font-size: 12px; color: var(--accent3); margin-bottom: 16px;
+  }
+  .notice-icon { flex-shrink: 0; }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .version-block { grid-template-columns: 1fr; }
+    .version-block::after { display: none; }
+    .version-meta { align-items: flex-start; padding-right: 0; }
+    .version-meta::after { display: none; }
+    .news-card { grid-template-columns: 1fr; }
+    .news-rank { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ===== HEADER ===== -->
+  <header class="report-header">
+    <div class="label">AI技術動向 週次レポート</div>
+    <h1>AI技術動向まとめ — 2026年6月第3週</h1>
+    <div class="period">
+      調査期間 <span>2026-06-12 〜 2026-06-19</span>　作成日 <span>2026-06-19</span>
+    </div>
+  </header>
+
+  <!-- ===== EXECUTIVE SUMMARY ===== -->
+  <div class="exec-summary">
+    <h2>Executive Summary</h2>
+    <p>Claude Codeは今週だけで <strong>5バージョン（v2.1.176〜v2.1.183）</strong>をリリース。auto modeにおける破壊的コマンドの自動ブロックや、<code>/config key=value</code>構文の追加でプロンプト内設定変更が可能になるなど、実務利用の安全性・利便性が大幅に向上した。</p>
+    <p>OpenAI Codexは大規模リポジトリ向けパフォーマンス改善とmacOS向け「Record &amp; Replay」機能を追加。一方、AIコスト競争が激化しており、Anthropicは6月9日にClaude Fable 5（SWE-bench Pro 80.3%）を発売、OpenAIは価格引き下げを検討中と報じられた。</p>
+    <p>国内技術コミュニティ（Qiita/Zenn）ではClaude Codeの権限ルール・設定変更構文など、バージョンアップに追随した実践記事が週中に相次いで投稿された。</p>
+    <p>GitHub Copilotは6月1日に使用量ベース課金（AI Credits）へ移行済みで、エージェント型利用のコストが実質大幅増となる影響が業界に広がっている。</p>
+  </div>
+
+  <!-- ===== SECTION 1: Claude Code / Codex ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-claude">🤖</div>
+      <h2>1. Claude Code / Codex 機能追加</h2>
+      <span class="count-badge">期間内リリース 5件</span>
+    </div>
+
+    <!-- Sub-section: Claude Code -->
+    <h3 style="font-size:15px; color: var(--text-muted); margin-bottom:20px; font-weight:600; letter-spacing:0.04em;">
+      ① Claude Code（Anthropic） — v2.1.176 〜 v2.1.183
+    </h3>
+
+    <div class="version-timeline">
+
+      <!-- v2.1.183 -->
+      <div class="version-block">
+        <div class="version-meta">
+          <span class="version-tag">v2.1.183</span>
+          <span class="version-date">2026-06-19</span>
+        </div>
+        <div class="version-card">
+          <div class="change-group">
+            <span class="change-type type-new">新機能</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title"><code>/config --help</code> でショートハンドキー一覧を表示</div>
+                <div class="impact">設定変更の学習コストを削減。使えるキーをその場で確認できる。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-improve">改善</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">auto mode 安全性強化：未指示の破壊的コマンドを自動ブロック</div>
+                <div class="impact">
+                  ブロック対象：<code>git reset --hard</code>、<code>git checkout -- .</code>、<code>git clean -fd</code>、<code>git stash drop</code>、<code>terraform/pulumi/cdk destroy</code>。エージェントが誤ってデータを消す事故を防止。
+                </div>
+              </li>
+              <li class="change-item">
+                <div class="title"><code>/config</code> トグル動作を改善（Enter/Space で変更、Esc で保存終了）</div>
+                <div class="impact">設定画面の操作が直感的になり、誤操作リスクが減る。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-fix">修正</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">thinking.disabled 時の 400 エラー修正 / WebSearch サブエージェントの空結果問題 / Windows Terminal での全画面 TUI 破損 / MCP 認証時の auth-stub ツール露出</div>
+                <div class="impact">Windows 利用者・MCP 利用者の安定性が向上。</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- v2.1.181 -->
+      <div class="version-block">
+        <div class="version-meta">
+          <span class="version-tag">v2.1.181</span>
+          <span class="version-date">2026-06-17</span>
+        </div>
+        <div class="version-card">
+          <div class="change-group">
+            <span class="change-type type-new">新機能</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title"><code>/config key=value</code> 構文：プロンプトから任意設定を即変更</div>
+                <div class="impact">例：<code>/config thinking=false</code>。設定ファイルを開かずにチャット内で設定切り替えが可能に。</div>
+              </li>
+              <li class="change-item">
+                <div class="title"><code>CLAUDE_CLIENT_PRESENCE_FILE</code> 環境変数：マーカーファイルで mobile push 通知を抑制</div>
+                <div class="impact">CI/CD など無人実行時に不要な通知を止められる。</div>
+              </li>
+              <li class="change-item">
+                <div class="title"><code>sandbox.allowAppleEvents</code> 設定：macOS サンドボックスで Apple Events 送信を許可</div>
+                <div class="impact">macOS のアプリ間連携（スクリプト自動化）をサンドボックス内から実行可能に。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-improve">改善</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">Bun ランタイム 1.4 へアップグレード / 長文ストリーミングを行単位で逐次表示</div>
+                <div class="impact">起動速度・レスポンス表示速度が体感向上。</div>
+              </li>
+              <li class="change-item">
+                <div class="title">サブエージェントパネルの UX 改善：30 秒で自動非表示、最大 5 行、キーボードヒント追加</div>
+                <div class="impact">マルチエージェント使用時の画面が整理され視認性向上。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-fix">修正</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">ネットワークドライブ / cloud-synced フォルダでの Write/Edit 0 バイト問題 / macOS Spotlight reindex 時フリーズ / 起動時レグレッション（120ms/起動）修正</div>
+                <div class="impact">OneDrive・Dropbox 上のプロジェクトでのファイル書き込みが正常化。</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- v2.1.178/179 -->
+      <div class="version-block">
+        <div class="version-meta">
+          <span class="version-tag">v2.1.178–179</span>
+          <span class="version-date">2026-06-16/17</span>
+        </div>
+        <div class="version-card">
+          <div class="change-group">
+            <span class="change-type type-new">新機能</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title"><code>Tool(param:value)</code> 構文によるパラメータ付き権限ルール</div>
+                <div class="impact">例：<code>Agent(model:opus)</code> で Opus モデルのサブエージェントのみをブロック可能。細粒度の権限管理が実現。</div>
+              </li>
+              <li class="change-item">
+                <div class="title">ネストされた <code>.claude/skills</code> ディレクトリ対応：ディレクトリ名で名前衝突を回避</div>
+                <div class="impact">モノレポや複数プロジェクト混在環境でのスキル管理が容易に。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-improve">改善</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">auto mode でサブエージェントスポーン前に classifier が事前評価</div>
+                <div class="impact">不正なサブエージェント呼び出しを早期検知し、セキュリティが向上。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-fix">修正</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">mid-stream 接続切れ時の部分レスポンス保全 / WSL2 マウスホイールスクロール修正（Windows Terminal・VS Code）/ スピナーフリーズ修正</div>
+                <div class="impact">WSL2 開発者の操作感が大幅改善。接続不安定環境でも作業継続可能に。</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- v2.1.176 -->
+      <div class="version-block">
+        <div class="version-meta">
+          <span class="version-tag">v2.1.176</span>
+          <span class="version-date">2026-06-12</span>
+        </div>
+        <div class="version-card">
+          <div class="change-group">
+            <span class="change-type type-new">新機能</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">セッションタイトル多言語化：会話の言語でタイトルを自動生成</div>
+                <div class="impact">日本語セッションのタイトルが英語になる問題が解消。非英語チームの UX 向上。</div>
+              </li>
+              <li class="change-item">
+                <div class="title"><code>footerLinksRegexes</code> 設定：フッターリンクバッジを正規表現でカスタマイズ</div>
+                <div class="impact">組織ごとのフッターリンク表示の柔軟な制御が可能に。</div>
+              </li>
+            </ul>
+          </div>
+          <div class="change-group">
+            <span class="change-type type-improve">改善</span>
+            <ul class="change-list">
+              <li class="change-item">
+                <div class="title">Bedrock 認証情報キャッシング改善：<code>Expiration</code> まで有効期限管理</div>
+                <div class="impact">AWS Bedrock 利用時の認証エラーが減少。</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end version-timeline -->
+
+    <!-- Sub-section: Codex -->
+    <h3 style="font-size:15px; color: var(--text-muted); margin: 32px 0 16px; font-weight:600; letter-spacing:0.04em;">
+      ② OpenAI Codex — 期間中のアップデート
+    </h3>
+
+    <div class="notice">
+      <span class="notice-icon">⚠</span>
+      <span>OpenAI Codex の公式 Changelog（developers.openai.com/codex/changelog）はアクセス制限で直接取得不可。以下は releasebot.io および WebSearch 経由の情報。正確な日付は「未確認」。</span>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="change-item">
+        <div class="title">Record &amp; Replay（macOS 限定・要 Computer Use 有効化）</div>
+        <div class="impact">実演したワークフローを「スキル」として保存し再利用可能に。繰り返し作業の自動化が容易になる。</div>
+      </div>
+      <div class="change-item">
+        <div class="title">自動化実行履歴のバルクアクション（一括既読・アーカイブ）</div>
+        <div class="impact">大量の自動化タスク管理が効率化。</div>
+      </div>
+      <div class="change-item">
+        <div class="title">大規模リポジトリ・長時間セッションのパフォーマンス改善</div>
+        <div class="impact">Git の組み込みファイルシステムモニタを保持しアーカイブルックアップを高速化。大規模コードベースでの応答速度が向上。</div>
+      </div>
+      <div class="change-item">
+        <div class="title">実験的 <code>/realtime</code> ボイスコントロールと音声依存ライブラリを削除（TUI）</div>
+        <div class="impact">未成熟な機能を除去し TUI の安定性を確保。</div>
+      </div>
+      <div class="change-item">
+        <div class="title">CLI README 刷新・ドキュメント整合性向上</div>
+        <div class="impact">古い手順書に従う新規ユーザーの混乱を防止。</div>
+      </div>
+    </div>
+    <p style="font-size:12px; color:var(--text-dim); margin-top:10px;">
+      出典: <a href="https://releasebot.io/updates/openai/codex">releasebot.io – Codex Updates June 2026</a>
+    </p>
+
+  </section>
+
+  <!-- ===== SECTION 2: AI技術記事 ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-article">📝</div>
+      <h2>2. AI技術記事（Zenn / Qiita）</h2>
+      <span class="count-badge">厳選 6件</span>
+    </div>
+
+    <div class="notice">
+      <span class="notice-icon">ℹ</span>
+      <span>期間（2026-06-12〜19）内に投稿された記事を優先。一部は直接アクセス制限により本文取得不可のため、検索スニペット・タイトルから要約を構成。その場合は「要約：推定」と付記。</span>
+    </div>
+
+    <div class="article-grid">
+
+      <!-- Article 1 -->
+      <div class="article-card">
+        <div class="article-card-header">
+          <div class="article-num">1</div>
+          <h3>Claude Code v2.1.181 の新機能・バグ修正まとめ ─ /config 構文と重大バグ修正</h3>
+        </div>
+        <div class="article-meta">
+          <span class="tag">Qiita</span>
+          <span class="tag date">2026-06-18</span>
+          <span class="tag">Claude Code</span>
+          <span class="tag">ツール解説</span>
+        </div>
+        <div class="article-summary">
+          Claude Code v2.1.181 でリリースされた <code>/config key=value</code> 構文・Apple Events 対応・CLAUDE_CLIENT_PRESENCE_FILE 環境変数などの新機能を実例付きで解説。ネットワークドライブでの 0 バイト書き込みバグなど、実務に影響する重大修正もカバー。
+        </div>
+        <div class="article-footer">
+          <span class="article-audience">Claude Code を日常利用するエンジニア全般</span>
+          <a href="https://qiita.com/picnic/items/5dbedcdd25053ee70eb5" class="article-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+      <!-- Article 2 -->
+      <div class="article-card">
+        <div class="article-card-header">
+          <div class="article-num">2</div>
+          <h3>Claude Code 2.1.178 の権限ルールはツール引数までマッチできる</h3>
+        </div>
+        <div class="article-meta">
+          <span class="tag">Qiita</span>
+          <span class="tag date">2026-06-17</span>
+          <span class="tag">Claude Code</span>
+          <span class="tag">セキュリティ</span>
+          <span class="tag">権限管理</span>
+        </div>
+        <div class="article-summary">
+          v2.1.178 で追加された <code>Tool(param:value)</code> 構文を解説。<code>Agent(model:opus)</code> のように特定モデルのサブエージェントのみをブロックする細粒度の権限設定が可能になったことを実例で示す。auto mode 運用における安全設計への応用方法も論じる。
+        </div>
+        <div class="article-footer">
+          <span class="article-audience">Claude Code を auto mode で運用するチーム・セキュリティ担当者</span>
+          <a href="https://qiita.com/okssusucha/items/89b442f6cf4311c99283" class="article-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+      <!-- Article 3 -->
+      <div class="article-card">
+        <div class="article-card-header">
+          <div class="article-num">3</div>
+          <h3>Claude/GPT をローカル LLM に置き換えてコーディングできるか？実用比較</h3>
+        </div>
+        <div class="article-meta">
+          <span class="tag">Qiita</span>
+          <span class="tag date">2026-06-16</span>
+          <span class="tag">ローカルLLM</span>
+          <span class="tag">コスト削減</span>
+          <span class="tag">検証</span>
+        </div>
+        <div class="article-summary">
+          Claude と GPT-4 の代替としてローカル LLM を日常コーディングに使えるか検証。Hacker News で 1,200 いいねを獲得した注目記事。具体的なモデル・ベンチマーク・開発体験の差を計測し、「お遊びを卒業した」と評価できる水準のモデルを特定。コスト試算も掲載。
+        </div>
+        <div class="article-footer">
+          <span class="article-audience">API コスト削減を検討しているフリーランス・個人開発者</span>
+          <a href="https://qiita.com/picnic/items/e7fa3654f4567bb9c238" class="article-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+      <!-- Article 4 -->
+      <div class="article-card">
+        <div class="article-card-header">
+          <div class="article-num">4</div>
+          <h3>llterm 小話 (#42) — 沈黙する AI、156% を指すメーター：Claude Code を自走 GUI 化した一日の楽屋小話集</h3>
+        </div>
+        <div class="article-meta">
+          <span class="tag">Qiita</span>
+          <span class="tag date">2026-06-12</span>
+          <span class="tag">Claude Code</span>
+          <span class="tag">自動化</span>
+          <span class="tag">実験</span>
+        </div>
+        <div class="article-summary">
+          Claude Code を自律ループで駆動してターミナル GUI を構築する実験の記録。コンテキストメーターが 156% を超えた際の挙動・沈黙する AI の対処法・メニュー自動生成などのエッジケースを実例で紹介。コンパクション戦略の示唆も含む。
+        </div>
+        <div class="article-footer">
+          <span class="article-audience">Claude Code を長時間セッション・自律エージェントとして運用するエンジニア</span>
+          <a href="https://qiita.com/furuse-kazufumi/items/22d5460384c2cb54a9e6" class="article-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+      <!-- Article 5 -->
+      <div class="article-card">
+        <div class="article-card-header">
+          <div class="article-num">5</div>
+          <h3>Claude Code マルチエージェント実践入門 ― 並列処理で AI 開発を加速させる方法</h3>
+        </div>
+        <div class="article-meta">
+          <span class="tag">Zenn</span>
+          <span class="tag date">投稿日：未確認</span>
+          <span class="tag">マルチエージェント</span>
+          <span class="tag">設計パターン</span>
+        </div>
+        <div class="article-summary">
+          シングルエージェントとマルチエージェント構成の比較から始まり、Claude Code での Agent ツールを使ったサブエージェント並列化の実装パターンを解説。具体的なプロンプト設計・エラーハンドリング・コスト考慮まで踏み込んだ実践的な内容。
+        </div>
+        <div class="article-footer">
+          <span class="article-audience">開発ワークフローを AI で高速化したいテックリード・上級エンジニア</span>
+          <a href="https://zenn.dev/91works/articles/86e2e0cf33f823" class="article-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+      <!-- Article 6 -->
+      <div class="article-card">
+        <div class="article-card-header">
+          <div class="article-num">6</div>
+          <h3>2026年6月第1週 AI動向まとめ：エージェントが「実証実験」を抜け、PC とブラウザに溶け込んだ週</h3>
+        </div>
+        <div class="article-meta">
+          <span class="tag">Qiita</span>
+          <span class="tag date">2026年6月第1週</span>
+          <span class="tag">動向まとめ</span>
+          <span class="tag">エージェント</span>
+        </div>
+        <div class="article-summary">
+          6月第1週の主要 AI 動向（Claude Fable 5 発売・GitHub Copilot 課金変更・各社エージェント製品発表）をまとめたキュレーション記事。エージェントが PoC から日常ツールへ移行しつつあるトレンドを分析。各トピックに出典 URL 付き。
+        </div>
+        <div class="article-footer">
+          <span class="article-audience">AI 動向を週次でキャッチアップしたいビジネスパーソン・PM・エンジニア</span>
+          <a href="https://qiita.com/syunichisato51/items/3ab509bde0a3633d6980" class="article-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: AI一般ニュース ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-icon icon-news">🌐</div>
+      <h2>3. 一般的な AI ニュース（企業動向・世界情勢）</h2>
+      <span class="count-badge">厳選 5件</span>
+    </div>
+
+    <div class="notice">
+      <span class="notice-icon">⚠</span>
+      <span>一部のニュース（Fable 5 発売・GitHub Copilot 課金・Karpathy 入社）は期間（6/12〜）の直前に発生したが、期間中も継続して報じられ実務影響が継続するため収録。各事実の日付を明記。</span>
+    </div>
+
+    <div class="news-grid">
+
+      <!-- News 1 -->
+      <div class="news-card">
+        <div class="news-rank">1</div>
+        <div class="news-body">
+          <h3>OpenAI が Anthropic に対して大幅値下げの「価格戦争」を検討</h3>
+          <div class="news-meta">
+            <span class="news-date">報道：2026-06-11 前後</span>
+            <span class="news-source">出典：Decrypt / Yahoo Finance</span>
+          </div>
+          <div class="news-fact"><strong>事実：</strong>Anthropic の年換算収益は 2025年1月の約 $10 億から 2026年5月に $470 億へ約30倍増（対する OpenAI は $130 億→$240〜250 億）。OpanAI はこの差を埋めるためトークン価格の大幅引き下げを検討中と報じられた。</div>
+          <div class="news-implication">LLM API の価格競争が本格化。開発者・企業にとってはコスト低下の好機だが、オープンソース（DeepSeek V4-Pro: $0.87/M 出力）も競争圧力となっており、クローズドモデル各社はさらなる値下げを迫られると見られる。</div>
+          <a href="https://decrypt.co/370854/openai-price-war-anthropic-deepseek-china" class="news-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+      <!-- News 2 -->
+      <div class="news-card">
+        <div class="news-rank">2</div>
+        <div class="news-body">
+          <h3>Anthropic が Claude Fable 5 & Mythos 5 を発売（SWE-bench Pro 80.3%）</h3>
+          <div class="news-meta">
+            <span class="news-date">発売日：2026-06-09（期間直前）</span>
+            <span class="news-source">出典：anthropic.com</span>
+          </div>
+          <div class="news-fact"><strong>事実：</strong>Claude Fable 5 は SWE-bench Pro 80.3%（GPT-5.5 比 +21.7pt）、価格 $10/$50 per 1M tokens。6/9〜6/22 は Pro/Max/Team/Enterprise ユーザーに無料提供中。</div>
+          <div class="news-implication">コーディング性能で OpenAI モデルを大幅に上回るベンチマーク結果が、価格競争圧力を後押しし、期間中の OpenAI の値下げ検討報道につながったと見られる。</div>
+          <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" class="news-link" target="_blank">公式発表 →</a>
+        </div>
+      </div>
+
+      <!-- News 3 -->
+      <div class="news-card">
+        <div class="news-rank">3</div>
+        <div class="news-body">
+          <h3>GitHub Copilot が使用量ベース課金（AI Credits）に完全移行</h3>
+          <div class="news-meta">
+            <span class="news-date">切替日：2026-06-01（期間中も継続影響）</span>
+            <span class="news-source">出典：GitHub Blog / GitHub Docs</span>
+          </div>
+          <div class="news-fact"><strong>事実：</strong>リクエストベースの Premium Request Unit 制から廃止。1 AI Credit = $0.01 のトークン課金制へ移行。月次プラン加入者は自動移行済み、年次は契約満了まで旧制度。</div>
+          <div class="news-implication">エージェント型の長時間実行（Copilot Workspace など）は従来の定額モデルより大幅にコストが増える可能性。企業の Copilot 利用コスト管理が急務になる。</div>
+          <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/" class="news-link" target="_blank">公式ブログ →</a>
+        </div>
+      </div>
+
+      <!-- News 4 -->
+      <div class="news-card">
+        <div class="news-rank">4</div>
+        <div class="news-body">
+          <h3>Andrej Karpathy が Anthropic の pre-training チームに参加</h3>
+          <div class="news-meta">
+            <span class="news-date">発表日：2026-05-19（期間前だが業界影響継続）</span>
+            <span class="news-source">出典：TechCrunch / X (@karpathy)</span>
+          </div>
+          <div class="news-fact"><strong>事実：</strong>OpenAI 共同創業者でテスラ AI 元責任者の Karpathy が Anthropic pre-training チーム（Nick Joseph 傘下）に参加。Claude 自身を活用して事前学習研究を加速する新チームの立ち上げも担う。</div>
+          <div class="news-implication">「AI でAIを訓練する」研究アプローチへの本格投資を Anthropic が宣言。トップ研究者の磁力として Anthropic の競争優位が高まると見られる。</div>
+          <a href="https://techcrunch.com/2026/05/19/openai-co-founder-andrej-karpathy-joins-anthropics-pre-training-team/" class="news-link" target="_blank">TechCrunch →</a>
+        </div>
+      </div>
+
+      <!-- News 5 -->
+      <div class="news-card">
+        <div class="news-rank">5</div>
+        <div class="news-body">
+          <h3>Anthropic が中国 AI ラボ（DeepSeek・Moonshot・MiniMax）による大規模な知識蒸留を告発</h3>
+          <div class="news-meta">
+            <span class="news-date">報道：2026年6月</span>
+            <span class="news-source">出典：simplifyaitools.com / eWeek</span>
+          </div>
+          <div class="news-fact"><strong>事実：</strong>Anthropic は DeepSeek、Moonshot、MiniMax が数千の不正アカウントを使って Claude モデルからの知識蒸留（distillation）キャンペーンを行っていると発表・告発。「産業規模の知識抽出」と表現。</div>
+          <div class="news-implication">AI モデルの知的財産保護と利用規約の国際執行が問われる事案。競合モデルの能力向上が自社モデルの蒸留によるものである場合のビジネス・法的リスクが顕在化した。</div>
+          <a href="https://simplifyaitools.com/newsletter/ai-news-june-2026-deepseeks-price-war-gemini-api-changes-anthropic-mythos/" class="news-link" target="_blank">記事を読む →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== SOURCES ===== -->
+  <div class="sources-section">
+    <h2>全出典リスト</h2>
+    <div class="sources-grid">
+      <div class="source-item">
+        <span class="src-num">[1]</span> Claude Code 公式 Changelog
+        <a href="https://code.claude.com/docs/en/changelog" target="_blank">code.claude.com/docs/en/changelog</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[2]</span> Claude Code GitHub CHANGELOG.md
+        <a href="https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md" target="_blank">raw.githubusercontent.com/.../CHANGELOG.md</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[3]</span> Classmethod – Claude Code v2.1.179〜v2.1.181 解説
+        <a href="https://dev.classmethod.jp/en/articles/20260618-cc-updates-v2-1-181/" target="_blank">dev.classmethod.jp/.../20260618-cc-updates-v2-1-181/</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[4]</span> Releasebot – Claude Code Updates June 2026
+        <a href="https://releasebot.io/updates/anthropic/claude-code" target="_blank">releasebot.io/updates/anthropic/claude-code</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[5]</span> Releasebot – Codex Updates June 2026
+        <a href="https://releasebot.io/updates/openai/codex" target="_blank">releasebot.io/updates/openai/codex</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[6]</span> OpenAI Codex Changelog（公式・アクセス制限）
+        <a href="https://developers.openai.com/codex/changelog" target="_blank">developers.openai.com/codex/changelog</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[7]</span> Qiita – Claude Code v2.1.181 新機能まとめ
+        <a href="https://qiita.com/picnic/items/5dbedcdd25053ee70eb5" target="_blank">qiita.com/picnic/items/5dbedcdd25053ee70eb5</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[8]</span> Qiita – Claude Code 2.1.178 権限ルール
+        <a href="https://qiita.com/okssusucha/items/89b442f6cf4311c99283" target="_blank">qiita.com/okssusucha/items/89b442f6cf4311c99283</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[9]</span> Qiita – Claude/GPT vs ローカルLLM 実用比較
+        <a href="https://qiita.com/picnic/items/e7fa3654f4567bb9c238" target="_blank">qiita.com/picnic/items/e7fa3654f4567bb9c238</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[10]</span> Qiita – llterm小話 #42（Claude Code 自走GUI化）
+        <a href="https://qiita.com/furuse-kazufumi/items/22d5460384c2cb54a9e6" target="_blank">qiita.com/furuse-kazufumi/items/22d5460384c2cb54a9e6</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[11]</span> Zenn – Claude Code マルチエージェント実践入門
+        <a href="https://zenn.dev/91works/articles/86e2e0cf33f823" target="_blank">zenn.dev/91works/articles/86e2e0cf33f823</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[12]</span> Qiita – 2026年6月第1週 AI動向まとめ
+        <a href="https://qiita.com/syunichisato51/items/3ab509bde0a3633d6980" target="_blank">qiita.com/syunichisato51/items/3ab509bde0a3633d6980</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[13]</span> Anthropic – Claude Fable 5 & Mythos 5 公式発表
+        <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank">anthropic.com/news/claude-fable-5-mythos-5</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[14]</span> Decrypt – OpenAI Price War Anthropic DeepSeek
+        <a href="https://decrypt.co/370854/openai-price-war-anthropic-deepseek-china" target="_blank">decrypt.co/370854/openai-price-war-anthropic-deepseek-china</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[15]</span> GitHub Blog – Copilot Usage-Based Billing
+        <a href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/" target="_blank">github.blog/.../github-copilot-is-moving-to-usage-based-billing/</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[16]</span> TechCrunch – Karpathy joins Anthropic
+        <a href="https://techcrunch.com/2026/05/19/openai-co-founder-andrej-karpathy-joins-anthropics-pre-training-team/" target="_blank">techcrunch.com/.../karpathy-joins-anthropics-pre-training-team/</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[17]</span> @karpathy on X – 入社発表ポスト
+        <a href="https://x.com/karpathy/status/2056753169888334312" target="_blank">x.com/karpathy/status/2056753169888334312</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[18]</span> SimplifyAITools – AI News June 2026 DeepSeek/Gemini/Mythos
+        <a href="https://simplifyaitools.com/newsletter/ai-news-june-2026-deepseeks-price-war-gemini-api-changes-anthropic-mythos/" target="_blank">simplifyaitools.com/newsletter/ai-news-june-2026...</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[19]</span> DeepSeek V4-Pro 概要（morphllm.com）
+        <a href="https://www.morphllm.com/deepseek-v4" target="_blank">morphllm.com/deepseek-v4</a>
+      </div>
+      <div class="source-item">
+        <span class="src-num">[20]</span> GitHub Docs – Copilot Billing Changes
+        <a href="https://docs.github.com/en/copilot/reference/copilot-billing/request-based-billing-legacy/what-changed-with-billing" target="_blank">docs.github.com/en/copilot/reference/copilot-billing/...</a>
+      </div>
+    </div>
+    <p style="font-size:11px; color:var(--text-dim); margin-top:16px; text-align:center;">
+      このレポートは自動収集・AI 要約を含みます。各項目の確認には出典 URL を参照してください。
+    </p>
+  </div>
+
+</div><!-- end page-wrap -->
+</body>
+</html>
