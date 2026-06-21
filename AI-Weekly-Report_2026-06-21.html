@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI週次レポート 2026-06-21</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3250;
+      --accent: #6c8dfa;
+      --accent2: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --text: #e2e8f0;
+      --text-muted: #8892b0;
+      --tag-new: #064e3b;
+      --tag-new-text: #6ee7b7;
+      --tag-fix: #7c2d12;
+      --tag-fix-text: #fca5a5;
+      --tag-imp: #1e3a5f;
+      --tag-imp-text: #93c5fd;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ===== HEADER ===== */
+    .site-header {
+      background: linear-gradient(135deg, #1e2a4a 0%, #0f1117 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+    }
+    .site-header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.8rem;
+      border-radius: 999px;
+      margin-bottom: 0.8rem;
+      text-transform: uppercase;
+    }
+    .site-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #6c8dfa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.4rem;
+    }
+    .site-header .period {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ===== LAYOUT ===== */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    /* ===== EXEC SUMMARY ===== */
+    .exec-summary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.5rem 1.8rem;
+      margin: 2rem 0;
+    }
+    .exec-summary h2 {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+    .exec-summary p {
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .exec-summary p:last-child { margin-bottom: 0; }
+
+    /* ===== SECTION HEADING ===== */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 3rem 0 1.2rem;
+    }
+    .section-label .icon {
+      font-size: 1.4rem;
+    }
+    .section-label h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .section-label .count {
+      margin-left: auto;
+      background: var(--surface2);
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    /* ===== TAG ===== */
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      margin-right: 0.3rem;
+      letter-spacing: 0.04em;
+    }
+    .tag-new  { background: var(--tag-new);  color: var(--tag-new-text); }
+    .tag-fix  { background: var(--tag-fix);  color: var(--tag-fix-text); }
+    .tag-imp  { background: var(--tag-imp);  color: var(--tag-imp-text); }
+    .tag-info { background: #2d1b69; color: #c4b5fd; }
+
+    /* ===== RELEASE CARD ===== */
+    .release-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    .release-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.2rem;
+      background: var(--surface2);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .release-version {
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .release-date {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+    .release-body {
+      padding: 1rem 1.2rem;
+    }
+    .release-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.4rem 0.7rem;
+      margin-bottom: 0.85rem;
+      align-items: start;
+    }
+    .release-item:last-child { margin-bottom: 0; }
+    .release-item .dot {
+      margin-top: 0.3rem;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .release-item .detail { color: var(--text); }
+    .release-item .impact {
+      grid-column: 2;
+      color: var(--green);
+      font-size: 0.83rem;
+    }
+
+    /* ===== ARTICLE CARD ===== */
+    .article-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .article-card:hover { border-color: var(--accent); }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .article-platform {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      background: #1a2744;
+      color: #93c5fd;
+      border: 1px solid #2e4a8a;
+    }
+    .article-date { color: var(--text-muted); font-size: 0.8rem; }
+    .article-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .article-title a { color: var(--text); }
+    .article-title a:hover { color: var(--accent); }
+    .article-summary {
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+    .article-summary p { margin-bottom: 0.3rem; }
+    .article-summary p:last-child { margin-bottom: 0; }
+    .article-audience {
+      font-size: 0.82rem;
+      color: var(--accent2);
+    }
+    .article-audience span { color: var(--text-muted); }
+
+    /* ===== NEWS CARD ===== */
+    .news-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .news-card:hover { border-color: var(--accent2); }
+    .news-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .news-date-badge {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.78rem;
+      color: var(--yellow);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .news-title {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--text);
+      flex: 1;
+    }
+    .news-fact {
+      font-size: 0.88rem;
+      color: var(--text);
+      margin-bottom: 0.35rem;
+      padding-left: 0.1rem;
+    }
+    .news-implication {
+      font-size: 0.85rem;
+      color: var(--accent2);
+      padding-left: 0.1rem;
+    }
+    .news-implication::before { content: "💡 示唆："; font-weight: 600; }
+    .news-source {
+      margin-top: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== DIVIDER ===== */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* ===== SOURCES ===== */
+    .sources {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      margin-top: 3rem;
+    }
+    .sources h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .sources ol {
+      padding-left: 1.4rem;
+    }
+    .sources li {
+      font-size: 0.82rem;
+      margin-bottom: 0.4rem;
+      color: var(--text-muted);
+    }
+    .sources li a { color: var(--accent); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      padding: 1.5rem 0 0.5rem;
+    }
+
+    /* ===== UNCONFIRMED ===== */
+    .unconfirmed {
+      font-size: 0.75rem;
+      color: var(--yellow);
+      background: #2d2000;
+      border: 1px solid #4d3800;
+      border-radius: 4px;
+      padding: 0.1rem 0.4rem;
+      margin-left: 0.3rem;
+    }
+
+    /* ===== SUBSECTION ===== */
+    .subsection-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 1.5rem 0 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .subsection-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .site-header h1 { font-size: 1.4rem; }
+      .release-header { gap: 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="site-header">
+  <div class="badge">Weekly AI Report</div>
+  <h1>AI 技術動向レポート</h1>
+  <p class="period">対象期間：2026年6月14日（日）〜 2026年6月21日（日）　発行日：2026-06-21</p>
+</header>
+
+<div class="container">
+
+  <!-- ===== EXECUTIVE SUMMARY ===== -->
+  <div class="exec-summary">
+    <h2>エグゼクティブサマリー</h2>
+    <p>今週は <strong>Claude Code が5バージョン（v2.1.178–v2.1.185）</strong>をリリース。自動モードの安全強化（破壊的 git コマンド・IaC 破壊コマンドのブロック）が最大トピック。</p>
+    <p>OpenAI は <strong>$150M 投資のパートナーネットワーク</strong>を6月14日に発表し、企業導入加速を宣言。Codex CLI は v0.141.0 で安全な暗号化リレーと音声制御を追加した。</p>
+    <p>M&amp;A では <strong>SpaceX が Cursor（Anysphere）を $600億 の株式交換で正式合意</strong>（6月16日）。AI コーディングツール市場が宇宙産業と合流する歴史的取引。</p>
+    <p>Anthropic は <strong>ソウルオフィスを開設</strong>（6月17-18日）し、NAVER・Nexon・Samsung SDS・LG CNS など韓国大企業が相次いで Claude Code を採用。Google は Gemini CLI を <strong>Antigravity CLI</strong> へ移行すると発表。</p>
+    <p>AI人材流動では <strong>Google Gemini 共同リード Noam Shazeer が OpenAI へ移籍</strong>（6月18日）。Transformer 論文共著者の移籍は業界に大きな衝撃を与えた。</p>
+  </div>
+
+  <!-- ===============================================================
+       SECTION 1: Claude Code / Codex
+  =============================================================== -->
+  <div class="section-label">
+    <span class="icon">⚙️</span>
+    <h2>Claude Code / Codex の機能追加</h2>
+    <span class="count">対象期間内 5+3 リリース</span>
+  </div>
+
+  <!-- Claude Code -->
+  <div class="subsection-title">Claude Code（Anthropic）</div>
+
+  <!-- v2.1.185 -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v2.1.185</span>
+      <span class="release-date">2026-06-20</span>
+      <span class="tag tag-imp">改善</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>改善</strong> — ストリーム停止ヒントのメッセージを刷新。「No response from API · Retrying in …」→「Waiting for API response · will retry in …」へ変更し、トリガーを10秒→20秒に延長。</div>
+          <div class="impact">✦ UX 向上：誤検知が半減し、低速回線での不要な不安が軽減。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v2.1.183 -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v2.1.183</span>
+      <span class="release-date">2026-06-19</span>
+      <span class="tag tag-new">新機能</span>
+      <span class="tag tag-imp">改善</span>
+      <span class="tag tag-fix">修正</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — <code>attribution.sessionUrl</code> 設定を追加。コミット・PR への Claude セッションリンク付与を無効化できる。</div>
+          <div class="impact">✦ 企業ポリシー対応：クローズドプロジェクトで URL の外部漏洩を防止。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — <code>/config --help</code> でショートハンドキー一覧を表示。</div>
+          <div class="impact">✦ 学習コスト削減：設定キーをリファレンスなしに確認可能。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>改善（重要）</strong> — Auto モードの安全強化。① <code>git reset --hard</code> / <code>git checkout -- .</code> / <code>git clean -fd</code> / <code>git stash drop</code> を明示的要求なしにブロック。② <code>git commit --amend</code> を「今セッションでエージェントが作成していないコミット」へのブロック。③ <code>terraform destroy</code> / <code>pulumi destroy</code> / <code>cdk destroy</code> を特定スタック指定なしにブロック。</div>
+          <div class="impact">✦ 生産性×安全：意図しないデータ消失・インフラ削除を防ぐ業務安全ネット。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>改善</strong> — 非推奨モデル使用時に stderr（print モード）と agent frontmatter 両方で警告を表示。</div>
+          <div class="impact">✦ 移行スムーズ化：API 移行忘れを早期発見。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>修正</strong> — 起動時の空白ターミナルフリーズ（最大15秒）、macOS Spotlight 再インデックス中の TUI フリーズ、サブエージェントの無制限ネスト（5階層上限に統一）ほか多数。</div>
+          <div class="impact">✦ 安定性向上：起動体験とリモートセッション信頼性が改善。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v2.1.181 -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v2.1.181</span>
+      <span class="release-date">2026-06-17</span>
+      <span class="tag tag-new">新機能</span>
+      <span class="tag tag-imp">改善</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — <code>/config key=value</code> でプロンプトから直接設定変更（例：<code>/config thinking=false</code>）。</div>
+          <div class="impact">✦ 操作効率化：設定ファイルを開かずに即座に切り替え可能。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — <code>sandbox.allowAppleEvents</code> opt-in 設定（macOS）、<code>CLAUDE_CLIENT_PRESENCE_FILE</code> 環境変数でモバイル通知を抑制。</div>
+          <div class="impact">✦ 柔軟な通知管理：CI/CD 環境や集中作業時のノイズ削減。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>改善</strong> — バンドル Bun ランタイムを 1.4 へアップグレード。長い段落ストリーミングを行単位で逐次表示に変更。API 接続が思考中に切断された際の自動リトライを改善。サブエージェントパネルを30秒後に自動非表示・最大5行スクロールに。</div>
+          <div class="impact">✦ 応答体験の向上：長文回答が逐次表示になりタイムアウト耐性も向上。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v2.1.179 -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v2.1.179</span>
+      <span class="release-date">2026-06-16</span>
+      <span class="tag tag-fix">修正</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>修正</strong> — ストリーム途中の接続断時に部分レスポンスを保持。WSL2 のマウスホイールスクロールのリグレッション（v2.1.172 起因）を修正。Linux 上のサンドボックス glob パフォーマンス問題、フィードバックサーベイの1桁回答バグを修正。</div>
+          <div class="impact">✦ 安定性：WSL2 ユーザーと長文タスクの使いやすさが回復。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v2.1.178 -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v2.1.178</span>
+      <span class="release-date">2026-06-15</span>
+      <span class="tag tag-new">新機能</span>
+      <span class="tag tag-imp">改善</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — <code>Tool(param:value)</code> 構文でパーミッションルールを細粒度指定（例：<code>Agent(model:opus)</code>）。</div>
+          <div class="impact">✦ 権限制御の精度向上：モデル・パラメータ単位で承認範囲を絞り込み可能。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — ネストされた <code>.claude/skills</code> ディレクトリから修飾名でスキルを自動ロード。Auto モードのサブエージェント評価をローンチ前に実施するよう改善。</div>
+          <div class="impact">✦ 大規模プロジェクト対応：スキルのモジュール化・名前空間管理が容易に。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>修正</strong> — Chrome OAuth 接続失敗、メモリリーク（stale WebSocket/OAuth ディスクリプタ）を修正。</div>
+          <div class="impact">✦ リモートセッションの信頼性向上。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OpenAI Codex -->
+  <div class="subsection-title">OpenAI Codex CLI</div>
+
+  <!-- v0.141.0 -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v0.141.0</span>
+      <span class="release-date">2026-06-18（安定版）</span>
+      <span class="tag tag-new">新機能</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — リモート実行に認証済み暗号化 Noise リレーチャネルを採用。ローカル→リモートホストへのスレッドハンドオフ機能を追加。</div>
+          <div class="impact">✦ セキュリティ強化：リモートセッションの通信が E2E 暗号化。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — クロスプラットフォーム対応の作業ディレクトリとシェル状態の永続化。</div>
+          <div class="impact">✦ 生産性向上：セッション再接続後も作業コンテキストを維持。</div>
+        </div>
+      </div>
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail"><strong>新機能</strong> — リアルタイムクライアント向けの音声制御機能を追加。プラグイン発見メカニズムの拡張。</div>
+          <div class="impact">✦ 入力インターフェースの多様化：ハンズフリー操作が可能に。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- v0.142.0-alpha -->
+  <div class="release-block">
+    <div class="release-header">
+      <span class="release-version">v0.142.0-alpha.2〜10</span>
+      <span class="release-date">2026-06-18〜21（アルファ）</span>
+      <span class="tag tag-info">α テスト中</span>
+    </div>
+    <div class="release-body">
+      <div class="release-item">
+        <div class="dot"></div>
+        <div>
+          <div class="detail">alpha.2（6/18）→ alpha.10（6/21）まで9本のアルファビルドを連続リリース。次期安定版（v0.142.0）に向けた急速なイテレーション中。変更内容の詳細は <a href="https://github.com/openai/codex/releases" target="_blank">GitHub Releases</a> で追跡可能。</div>
+          <div class="impact">✦ 早期採用者向け：新機能を即日試せる状態。本番環境への適用は安定版待ちを推奨。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       SECTION 2: AI Tech Articles
+  =============================================================== -->
+  <div class="divider"></div>
+  <div class="section-label">
+    <span class="icon">📝</span>
+    <h2>AI 技術記事（Zenn / Qiita 等）</h2>
+    <span class="count">厳選 6 件</span>
+  </div>
+
+  <!-- Article 1 -->
+  <div class="article-card">
+    <div class="article-meta">
+      <span class="article-platform">Zenn</span>
+      <span class="article-date">2026-06-20（URL 日付より確認）</span>
+    </div>
+    <div class="article-title">
+      <a href="https://zenn.dev/muramasa0228/articles/2026-06-20-mcp-zenn-pipeline" target="_blank">
+        Claude Code と MCP で「記事を書く→Zenn公開→経歴に蓄積」を自動化した
+      </a>
+    </div>
+    <div class="article-summary">
+      <p>① Claude Code のスキル <code>/post-article</code> を作成し、記事執筆・Zenn 公開・Git コミットの一連フローを自動化するパイプラインを構築。</p>
+      <p>② Zenn のファイル名が slug（公開 URL）に直結する仕様を活かし、記事管理を Git で一元化。変更・公開前に確認ゲートを設け誤公開を防止。</p>
+      <p>③ 非公式 MCP サーバー（unofficial-qiita-mcp）との組み合わせでマルチプラットフォーム投稿にも応用可能。</p>
+    </div>
+    <p class="article-audience"><span>対象者：</span> Claude Code を使う技術ブロガー・個人開発者。コンテンツ管理ワークフローを自動化したいエンジニア。</p>
+  </div>
+
+  <!-- Article 2 -->
+  <div class="article-card">
+    <div class="article-meta">
+      <span class="article-platform">Qiita</span>
+      <span class="article-date">2026年6月（掲載日 未確認）<span class="unconfirmed">日付未確認</span></span>
+    </div>
+    <div class="article-title">
+      <a href="https://qiita.com/kai_kou/items/81cee59a85d82535e986" target="_blank">
+        Claude Code 6月新機能 — 5段階エージェントと /cd コマンドで自律開発を実現する
+      </a>
+    </div>
+    <div class="article-summary">
+      <p>① v2.1.172 で追加されたネストサブエージェント5階層対応と v2.1.169 の <code>/cd</code> コマンドを組み合わせた大規模エージェント開発手法を解説。</p>
+      <p>② Layer 1（Main）→ Layer 5（Verifier）まで「ニュース収集→記事執筆→検証→修正」を段階化するアーキテクチャを write-article スキルとして実装例付きで紹介。</p>
+      <p>③ 5階層上限は v2.1.183 で background / foreground 統一済みであることを付記。</p>
+    </div>
+    <p class="article-audience"><span>対象者：</span> Claude Code で複雑なマルチエージェントワークフローを設計したい中〜上級エンジニア。</p>
+  </div>
+
+  <!-- Article 3 -->
+  <div class="article-card">
+    <div class="article-meta">
+      <span class="article-platform">Qiita</span>
+      <span class="article-date">2026年6月（掲載日 未確認）<span class="unconfirmed">日付未確認</span></span>
+    </div>
+    <div class="article-title">
+      <a href="https://qiita.com/kai_kou/items/337eb235da9b9a081836" target="_blank">
+        Claude Code Managed Agents 入門 — スケジュール実行と CLI 統合の実装ガイド
+      </a>
+    </div>
+    <div class="article-summary">
+      <p>① 2026年6月公開ベータの Claude Managed Agents でサービスアカウント型クレデンシャルを Vault に安全保管し、cron スケジュールで定期エージェント実行するまでの手順をコード付きで解説。</p>
+      <p>② ネットワーク境界で実キーをアタッチする仕組みにより、プロンプトインジェクションでも実 API キーがモデルコンテキストに現れない設計を図解。</p>
+      <p>③ Multiagent Orchestration（リサーチプレビュー）でリードエージェントが専門サブエージェントへタスク委譲するパターンを紹介。</p>
+    </div>
+    <p class="article-audience"><span>対象者：</span> 定期レポート生成・監視タスク等を AI エージェントに任せたい DevOps・バックエンドエンジニア。</p>
+  </div>
+
+  <!-- Article 4 -->
+  <div class="article-card">
+    <div class="article-meta">
+      <span class="article-platform">Qiita</span>
+      <span class="article-date">2026年6月（掲載日 未確認）<span class="unconfirmed">日付未確認</span></span>
+    </div>
+    <div class="article-title">
+      <a href="https://qiita.com/KeepMoveLab/items/158ba2af66c60fecb485" target="_blank">
+        【Claude Code × MCP】実務で使える6つの MCP サーバー実践ガイド｜トークン89%削減の具体例
+      </a>
+    </div>
+    <div class="article-summary">
+      <p>① Filesystem MCP・GitHub MCP・Slack MCP など実務頻出6つのサーバーを選定理由・設定方法・トークン節約量の実測値つきで比較。</p>
+      <p>② 特定のドキュメント参照パターンを MCP 経由に切り替えることでプロンプトトークンを最大89%削減できたケースを数値付きで報告。</p>
+      <p>③ CLAUDE.md 活用との組み合わせでさらなるコスト削減を実現する設計ガイドラインを提供。</p>
+    </div>
+    <p class="article-audience"><span>対象者：</span> Claude Code を本番業務に使いAPIコストを意識しているチーム・個人開発者。MCP 導入を検討中のエンジニア。</p>
+  </div>
+
+  <!-- Article 5 -->
+  <div class="article-card">
+    <div class="article-meta">
+      <span class="article-platform">Qiita</span>
+      <span class="article-date">2026年6月（掲載日 未確認）<span class="unconfirmed">日付未確認</span></span>
+    </div>
+    <div class="article-title">
+      <a href="https://qiita.com/yun_bow/items/d35ddd7b41d9a9875f15" target="_blank">
+        2026年6月版 AIエージェントを本当に使いこなすコツ ― 調査・設計・コーディング別 実践ガイド
+      </a>
+    </div>
+    <div class="article-summary">
+      <p>① 「調査フェーズ」「設計フェーズ」「コーディングフェーズ」別に最適なエージェント・プロンプト戦略を整理。プロンプトエンジニアリングの実践パターンをフロー図つきで解説。</p>
+      <p>② AI 倫理・組織導入の指針と、業務自動化での具体的な ROI 計測事例を掲載。</p>
+      <p>③ Qiita トレンド上位を継続する人気記事で、Claude Code v2.1.176 以降の機能を反映した最新版。</p>
+    </div>
+    <p class="article-audience"><span>対象者：</span> AI エージェント導入を検討または始めたばかりの業務エンジニア・プロジェクトマネージャー。</p>
+  </div>
+
+  <!-- Article 6 -->
+  <div class="article-card">
+    <div class="article-meta">
+      <span class="article-platform">Qiita</span>
+      <span class="article-date">2026-06-16 更新（検索スニペットより）</span>
+    </div>
+    <div class="article-title">
+      <a href="https://qiita.com/htani0817/items/5c5bffcbb53241ed5b54" target="_blank">
+        Claude Code × Codex × Obsidian Vault ― AI 二刀流で作る「何でも相談」環境の全設定公開
+      </a>
+    </div>
+    <div class="article-summary">
+      <p>① Claude Code と OpenAI Codex CLI を Obsidian ナレッジベースと連携させる全設定ファイル（.claude/settings.json / MCP 設定）を公開。</p>
+      <p>② 「コード生成は Codex、長文推論・調査は Claude」という役割分担のベンチマーク比較を掲載。</p>
+      <p>③ Obsidian Vault を MCP ツールとして読み書きする実装コードと、日常的な知識管理フローへの組み込み方法を解説。</p>
+    </div>
+    <p class="article-audience"><span>対象者：</span> 複数 AI ツールを使い分けたいパワーユーザー・PKM（個人知識管理）に興味のあるエンジニア。</p>
+  </div>
+
+  <!-- ===============================================================
+       SECTION 3: General AI News
+  =============================================================== -->
+  <div class="divider"></div>
+  <div class="section-label">
+    <span class="icon">🌐</span>
+    <h2>一般的な AI ニュース（企業動向・世界情勢）</h2>
+    <span class="count">厳選 5 件</span>
+  </div>
+
+  <!-- News 1 -->
+  <div class="news-card">
+    <div class="news-header">
+      <span class="news-date-badge">2026-06-14</span>
+      <span class="news-title">OpenAI、$1.5億投資の「パートナーネットワーク」を発表</span>
+    </div>
+    <p class="news-fact">OpenAI が $1.5億（約220億円）を投じる OpenAI Partner Network を正式ローンチ。Accenture・BCG・Bain をローンチパートナーとし、2026年末までに30万人の認定コンサルタントを育成する計画。Select / Advanced / Elite の3段階ティアでパートナーを格付け。</p>
+    <p class="news-implication">モデル性能競争から「エンタープライズ実装の実行力」競争へのシフトを OpenAI 自身が宣言。SI 企業に新たな AI 収益源が生まれ、コンサルティング市場の構造変革が加速すると見られる。</p>
+    <p class="news-source">出典: <a href="https://openai.com/index/introducing-openai-partner-network/" target="_blank">OpenAI 公式発表</a> / <a href="https://www.channelinsider.com/news-and-trends/openai-debuts-partner-network-backed-by-150m-investment/" target="_blank">Channel Insider</a></p>
+  </div>
+
+  <!-- News 2 -->
+  <div class="news-card">
+    <div class="news-header">
+      <span class="news-date-badge">2026-06-16</span>
+      <span class="news-title">SpaceX、AI コーディングツール Cursor を $600億で正式買収合意</span>
+    </div>
+    <p class="news-fact">SpaceX（NASDAQ: SPCX）が Cursor の親会社 Anysphere との合併契約を締結。SpaceX の IPO 直後に全株式交換で $600億（約8.8兆円）という AI スタートアップ史上最大規模の取引。SpaceX は X67（完全子会社）との逆三角合併で Cursor を傘下に収め、Q3 2026 クロージングを見込む。</p>
+    <p class="news-implication">宇宙産業と AI コーディングツールの融合は異色に見えるが、Elon Musk の「人型ロボット × AI コード生成」構想との整合と見られる。Cursor の競合（GitHub Copilot、Claude Code）への対抗上、巨大なコンピュート・資本力が背景に。</p>
+    <p class="news-source">出典: <a href="https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/" target="_blank">TechCrunch</a> / <a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank">CNBC</a></p>
+  </div>
+
+  <!-- News 3 -->
+  <div class="news-card">
+    <div class="news-header">
+      <span class="news-date-badge">2026-06-17〜18</span>
+      <span class="news-title">Anthropic ソウルオフィス開設、韓国大企業が Claude Code を相次いで採用</span>
+    </div>
+    <p class="news-fact">Anthropic が東京・バンガロールに続くアジア太平洋3拠点目としてソウルオフィスを開設。同時に NAVER（全エンジニア組織へ Claude Code 展開）・Nexon（ライブサービスゲーム開発）・Samsung SDS（Samsung Electronics 全社展開）・LG CNS（LG グループ全社員）・Hanwha Solutions（AWS Bedrock 経由でグローバル展開）が採用を発表。科学技術情報通信部と MOU を締結し、国家AI研究ラボ（KAIST 等60名）への提供も確定。</p>
+    <p class="news-implication">財閥グループを含む韓国大手の同時採用は Anthropic のアジア太平洋戦略の最大成果。日本・韓国市場でのエンタープライズ浸透が今後加速すると見られる。</p>
+    <p class="news-source">出典: <a href="https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem" target="_blank">Anthropic 公式発表</a> / <a href="https://www.koreatimes.co.kr/amp/business/tech-science/20260618/anthropic-opens-seoul-office-to-expand-ties-with-korean-ai-ecosystem" target="_blank">The Korea Times</a></p>
+  </div>
+
+  <!-- News 4 -->
+  <div class="news-card">
+    <div class="news-header">
+      <span class="news-date-badge">2026-06-18</span>
+      <span class="news-title">Google Gemini 共同リード Noam Shazeer が OpenAI に移籍</span>
+    </div>
+    <p class="news-fact">Google の VP of Engineering かつ Gemini モデルの共同リードである Noam Shazeer が X で退職・OpenAI 入社を発表。Shazeer は2017年「Attention Is All You Need」（Transformer 論文）の共著者。Google は2024年に約$27億で Character.AI から引き戻したばかり。Sam Altman は「10年越しの夢が叶った」とコメント。</p>
+    <p class="news-implication">Transformer 発明者の1人が Google から OpenAI へ転じたことは人材流動のターニングポイント。Google の Gemini 3.5 Pro 開発への影響は不透明で、OpenAI の次世代モデル競争力強化は確実と見られる。</p>
+    <p class="news-source">出典: <a href="https://9to5google.com/2026/06/17/geminis-co-lead-is-leaving-google-to-join-openai/" target="_blank">9to5Google</a> / <a href="https://officechai.com/ai/google-ai-veteran-and-transformers-paper-coauthor-noam-shazeer-joins-openai/" target="_blank">OfficeChai</a></p>
+  </div>
+
+  <!-- News 5 -->
+  <div class="news-card">
+    <div class="news-header">
+      <span class="news-date-badge">2026-06-18</span>
+      <span class="news-title">Google、Gemini CLI を「Antigravity CLI」へ移行発表</span>
+    </div>
+    <p class="news-fact">Google が Gemini CLI の後継として Antigravity CLI への移行を公式確認。Google I/O 2026（5月）で発表された Antigravity（エージェントファースト開発プラットフォーム）のコマンドラインツールとして統合される。移行スケジュールの詳細は別途公開予定。</p>
+    <p class="news-implication">CLI 統合は開発者エコシステムの一本化を示すもので、Claude Code・Codex CLI・Antigravity CLI の三つ巴競争が本格化。既存 Gemini CLI ユーザーへの移行コストが課題と見られる。</p>
+    <p class="news-source">出典: <a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank">Gemini API Release Notes</a> / <a href="https://www.buildfastwithai.com/blogs/google-io-2026-gemini-3-5-flash-announcements" target="_blank">Build Fast with AI</a></p>
+  </div>
+
+  <!-- ===== SOURCES ===== -->
+  <div class="divider"></div>
+  <div class="sources">
+    <h2>全出典リスト</h2>
+    <ol>
+      <li><a href="https://github.com/anthropics/claude-code/releases" target="_blank">GitHub – anthropics/claude-code Releases（Claude Code 公式リリースノート）</a></li>
+      <li><a href="https://code.claude.com/docs/en/whats-new" target="_blank">Claude Code Docs – What's new（Week 24まで）</a></li>
+      <li><a href="https://github.com/openai/codex/releases" target="_blank">GitHub – openai/codex Releases（Codex CLI 公式リリースノート）</a></li>
+      <li><a href="https://developers.openai.com/codex/changelog" target="_blank">OpenAI Developers – Codex Changelog</a></li>
+      <li><a href="https://openai.com/index/introducing-openai-partner-network/" target="_blank">OpenAI – Introducing the OpenAI Partner Network（2026-06-14）</a></li>
+      <li><a href="https://www.channelinsider.com/news-and-trends/openai-debuts-partner-network-backed-by-150m-investment/" target="_blank">Channel Insider – OpenAI Debuts Partner Network Backed by $150M</a></li>
+      <li><a href="https://www.explainx.ai/blog/openai-partner-network-150-million-enterprise-2026" target="_blank">Explainx.ai – OpenAI Partner Network: $150M, 300K Consultants</a></li>
+      <li><a href="https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/" target="_blank">TechCrunch – SpaceX to acquire Cursor for $60B（2026-06-16）</a></li>
+      <li><a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank">CNBC – SpaceX to acquire the AI coding startup Cursor for $60 billion</a></li>
+      <li><a href="https://www.bloomberg.com/news/articles/2026-06-16/spacex-cements-60-billion-deal-to-take-over-ai-startup-cursor" target="_blank">Bloomberg – SpaceX Cements $60 Billion Cursor Takeover</a></li>
+      <li><a href="https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem" target="_blank">Anthropic – Seoul Office &amp; Partnerships（2026-06-17）</a></li>
+      <li><a href="https://www.koreatimes.co.kr/amp/business/tech-science/20260618/anthropic-opens-seoul-office-to-expand-ties-with-korean-ai-ecosystem" target="_blank">The Korea Times – Anthropic opens Seoul office（2026-06-18）</a></li>
+      <li><a href="https://www.techtimes.com/articles/318637/20260619/anthropic-opens-its-seoul-office-even-us-export-ban-cuts-korean-access-its-top-models.htm" target="_blank">TechTimes – Anthropic Opens Its Seoul Office（2026-06-19）</a></li>
+      <li><a href="https://9to5google.com/2026/06/17/geminis-co-lead-is-leaving-google-to-join-openai/" target="_blank">9to5Google – Gemini's co-lead is leaving Google to join OpenAI（2026-06-17）</a></li>
+      <li><a href="https://officechai.com/ai/google-ai-veteran-and-transformers-paper-coauthor-noam-shazeer-joins-openai/" target="_blank">OfficeChai – Google AI Veteran Noam Shazeer Joins OpenAI</a></li>
+      <li><a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank">Google AI for Developers – Gemini API Release Notes</a></li>
+      <li><a href="https://zenn.dev/muramasa0228/articles/2026-06-20-mcp-zenn-pipeline" target="_blank">Zenn – Claude Code と MCP で Zenn 公開を自動化した（2026-06-20）</a></li>
+      <li><a href="https://qiita.com/kai_kou/items/81cee59a85d82535e986" target="_blank">Qiita – Claude Code 6月新機能 — 5段階エージェントと /cd コマンド</a></li>
+      <li><a href="https://qiita.com/kai_kou/items/337eb235da9b9a081836" target="_blank">Qiita – Claude Code Managed Agents 入門</a></li>
+      <li><a href="https://qiita.com/KeepMoveLab/items/158ba2af66c60fecb485" target="_blank">Qiita – 【Claude Code × MCP】トークン89%削減の具体例</a></li>
+      <li><a href="https://qiita.com/yun_bow/items/d35ddd7b41d9a9875f15" target="_blank">Qiita – 2026年6月版 AIエージェントを本当に使いこなすコツ</a></li>
+      <li><a href="https://qiita.com/htani0817/items/5c5bffcbb53241ed5b54" target="_blank">Qiita – Claude Code × Codex × Obsidian Vault 全設定公開</a></li>
+      <li><a href="https://platform.claude.com/docs/en/managed-agents/overview" target="_blank">Anthropic API Docs – Claude Managed Agents Overview</a></li>
+      <li><a href="https://felloai.com/all-we-know-so-far-about-grok-5/" target="_blank">FelloAI – Grok 5: Release Date &amp; All We Know（June 2026）</a></li>
+      <li><a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank">Anthropic – Claude Fable 5 and Claude Mythos 5（2026-06-09）</a></li>
+    </ol>
+  </div>
+
+  <footer>
+    <p>AI週次レポート · 生成日：2026-06-21 · 調査範囲：2026-06-14〜2026-06-21<br>
+    ※「日付未確認」マークの記事は投稿日を一次情報で確認できなかった項目です。出典URLは確認済み。</p>
+  </footer>
+
+</div><!-- /container -->
+</body>
+</html>
