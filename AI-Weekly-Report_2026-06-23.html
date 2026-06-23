@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI技術動向 週次レポート — 2026-06-23</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242736;
+    --border: #2e3147;
+    --accent: #6c63ff;
+    --accent2: #00c9a7;
+    --accent3: #ff6b6b;
+    --text: #e2e4f0;
+    --muted: #8b91b0;
+    --tag-new: #1a3a2a;
+    --tag-new-text: #4ade80;
+    --tag-fix: #1a2535;
+    --tag-fix-text: #60a5fa;
+    --tag-improve: #2a2015;
+    --tag-improve-text: #fbbf24;
+    --tag-news: #2a1520;
+    --tag-news-text: #fb7185;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a1d27 0%, #0f1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0 32px;
+    text-align: center;
+  }
+  .header .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #6c63ff, #00c9a7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .header .period {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Container */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Summary box */
+  .summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 24px;
+    margin: 32px 0;
+  }
+  .summary h2 {
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .summary p {
+    color: var(--text);
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .summary p:last-child { margin-bottom: 0; }
+
+  /* Section headers */
+  .section {
+    margin: 48px 0 24px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  .section-icon.purple { background: rgba(108,99,255,0.15); }
+  .section-icon.teal { background: rgba(0,201,167,0.15); }
+  .section-icon.red { background: rgba(255,107,107,0.15); }
+  .section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .section-header .count {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  /* Version timeline */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .version-block {
+    position: relative;
+    margin-bottom: 28px;
+  }
+  .version-block::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 12px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .version-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .version-num {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(108,99,255,0.1);
+    padding: 2px 10px;
+    border-radius: 4px;
+  }
+  .version-date {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #4a4f6a; }
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .card-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .tag.new { background: var(--tag-new); color: var(--tag-new-text); }
+  .tag.fix { background: var(--tag-fix); color: var(--tag-fix-text); }
+  .tag.improve { background: var(--tag-improve); color: var(--tag-improve-text); }
+  .tag.news { background: var(--tag-news); color: var(--tag-news-text); }
+  .tag.security { background: #2a1a2a; color: #d87bff; }
+
+  /* Item lists inside cards */
+  .item-list {
+    list-style: none;
+  }
+  .item-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .item-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-size: 12px;
+    top: 2px;
+  }
+  .impact {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(108,99,255,0.07);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .impact strong { color: var(--accent2); }
+
+  /* Article card */
+  .article-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .article-card:hover { border-color: #4a4f6a; }
+  .article-card h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .article-card h3 a { color: var(--text); }
+  .article-card h3 a:hover { color: var(--accent2); }
+  .article-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .article-meta span { display: flex; align-items: center; gap: 4px; }
+  .summary-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .audience-badge {
+    display: inline-block;
+    font-size: 11px;
+    color: var(--accent2);
+    background: rgba(0,201,167,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* News card */
+  .news-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .news-card:hover { border-color: #4a4f6a; }
+  .news-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .news-fact {
+    font-size: 13px;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-radius: 6px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .news-implication {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 8px 12px;
+    border-left: 2px solid var(--accent3);
+    background: rgba(255,107,107,0.05);
+    border-radius: 0 4px 4px 0;
+  }
+  .news-implication strong { color: var(--accent3); }
+
+  /* Sources */
+  .sources {
+    margin: 48px 0 0;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .sources h2 {
+    font-size: 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+  .sources ol {
+    padding-left: 20px;
+  }
+  .sources li {
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+  .sources li a { color: var(--accent); font-size: 12px; word-break: break-all; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 0;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  /* Alert/notice box */
+  .notice {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #fbbf24;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .header h1 { font-size: 22px; }
+    .container { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <div class="label">AI技術動向 週次レポート</div>
+    <h1>AI Weekly Intelligence Report</h1>
+    <div class="period">対象期間：2026年6月16日（月）〜 2026年6月23日（日）｜発行日：2026-06-23</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Executive Summary -->
+  <div class="summary">
+    <h2>Executive Summary</h2>
+    <p>本週最大のニュースは <strong>SpaceX によるAIコーディングスタートアップ Cursor の600億ドル買収合意（6月16日）</strong>。同社 IPO 直後のディールは史上最大のベンチャー買収として注目を集めた。</p>
+    <p>Claude Code は5バージョン（v2.1.179〜v2.1.186）を連続リリース。オートモードで危険な git コマンドをブロックするセーフガード（v2.1.183）や、MCP サーバーの CLI 認証コマンド（v2.1.186）が実装された。</p>
+    <p>Anthropic は韓国・ソウルオフィスを開設（6月17日）し、NAVER・Samsung SDS・LG CNS ら大手との連携を発表。一方で米輸出規制により最新モデル（Mythos 5/Fable 5）の外国人アクセスが制限されるという矛盾した状況が続いている。</p>
+    <p>Claude Fable 5 は6月22日をもって Pro/Max/Team/Enterprise プランの無料アクセス窓が閉じ、6月23日以降は使用クレジットが必要になった。GPT-5.6・Gemini 3.5 Pro GA がいずれも6月末に迫っており、モデル競争が最高潮を迎えている。</p>
+  </div>
+
+  <!-- ========== SECTION 1: Claude Code / Codex ========== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon purple">🛠</div>
+      <h2>1. Claude Code / Codex の機能追加</h2>
+      <span class="count">5 releases</span>
+    </div>
+
+    <!-- Claude Code -->
+    <h3 style="font-size:16px; color:var(--accent2); margin-bottom:16px; letter-spacing:0.5px;">■ Claude Code（Anthropic）</h3>
+    <div class="notice">以下のバージョン情報は <a href="https://code.claude.com/docs/en/changelog" target="_blank">公式 Changelog（code.claude.com）</a> に基づいています。</div>
+
+    <div class="timeline">
+
+      <!-- v2.1.186 -->
+      <div class="version-block">
+        <div class="version-header">
+          <span class="version-num">v2.1.186</span>
+          <span class="version-date">2026-06-22</span>
+          <span class="tag new">新機能</span>
+          <span class="tag fix">バグ修正</span>
+        </div>
+        <div class="card">
+          <ul class="item-list">
+            <li><span class="tag new">新機能</span> <code>claude mcp login &lt;name&gt;</code> / <code>claude mcp logout &lt;name&gt;</code> — インタラクティブメニューを開かずに MCP サーバーを CLI で認証</li>
+            <li><span class="tag new">新機能</span> <code>/workflows</code> エージェント詳細ビューにステータスフィルタ（<code>f</code>キー）を追加</li>
+            <li><span class="tag new">新機能</span> <code>/plugin</code> の Installed タブに「Skills」セクションを追加</li>
+            <li><span class="tag new">新機能</span> <code>teammate Mode: "iterm2"</code> 設定で macOS iTerm2 サポート</li>
+            <li><span class="tag improve">改善</span> <code>!</code> で始まる Bash コマンドが Claude の自動応答を起動（<code>"respondToBashCommands": false</code> で無効化可）</li>
+            <li><span class="tag fix">修正</span> スリープ後のストリーミングで "Content block not found" / JSON パースエラーが発生する問題</li>
+            <li><span class="tag fix">修正</span> スキルの frontmatter が kebab-case・snake_case・camelCase を受け付けるように</li>
+          </ul>
+          <div class="impact"><strong>実務インパクト：</strong>MCP 認証をスクリプトから自動化できるようになり、CI/CD パイプラインへの MCP サーバー組み込みが容易になる。</div>
+        </div>
+      </div>
+
+      <!-- v2.1.185 -->
+      <div class="version-block">
+        <div class="version-header">
+          <span class="version-num">v2.1.185</span>
+          <span class="version-date">2026-06-20</span>
+          <span class="tag improve">改善</span>
+        </div>
+        <div class="card">
+          <ul class="item-list">
+            <li><span class="tag improve">改善</span> ストリーム停止時のヒントメッセージを "Waiting for API response · will retry in …" に変更（20秒無応答後に表示、従来は10秒）</li>
+          </ul>
+          <div class="impact"><strong>実務インパクト：</strong>長い API 待機時の不安感が軽減され、ユーザーがセッションを誤中断するケースが減少。</div>
+        </div>
+      </div>
+
+      <!-- v2.1.183 -->
+      <div class="version-block">
+        <div class="version-header">
+          <span class="version-num">v2.1.183</span>
+          <span class="version-date">2026-06-19</span>
+          <span class="tag security">セキュリティ</span>
+          <span class="tag fix">バグ修正</span>
+        </div>
+        <div class="card">
+          <ul class="item-list">
+            <li><span class="tag security">安全</span> Auto モードで破壊的 git コマンド（<code>git reset --hard</code>・<code>git checkout -- .</code> 等）を明示的なユーザー指示なしにブロック</li>
+            <li><span class="tag improve">改善</span> 非推奨モデル使用時に警告と自動更新通知を表示</li>
+            <li><span class="tag new">新機能</span> <code>attribution.sessionUrl</code> 設定でコミットメッセージへの claude.ai セッションリンク挿入を省略可能に</li>
+            <li><span class="tag fix">修正</span> サブエージェント・WebSearch・ターミナル動作の複数リグレッションを修正</li>
+            <li><span class="tag fix">修正</span> ネストされたサブエージェント負荷下での Windows Terminal TUI 崩れ</li>
+          </ul>
+          <div class="impact"><strong>実務インパクト：</strong>自律実行モードでの意図しないデータ損失リスクが大幅低減。大規模コードベースへの AI エージェント適用が安全になる。</div>
+        </div>
+      </div>
+
+      <!-- v2.1.181 -->
+      <div class="version-block">
+        <div class="version-header">
+          <span class="version-num">v2.1.181</span>
+          <span class="version-date">2026-06-17</span>
+          <span class="tag new">新機能</span>
+          <span class="tag fix">バグ修正</span>
+        </div>
+        <div class="card">
+          <ul class="item-list">
+            <li><span class="tag new">新機能</span> <code>/config key=value</code> 構文で設定を即変更（例：<code>/config thinking=false</code>）</li>
+            <li><span class="tag new">新機能</span> <code>sandbox.allowAppleEvents</code> オプションで macOS のサンドボックスコマンドから Apple Events を発行可能に</li>
+            <li><span class="tag new">新機能</span> <code>CLAUDE_CLIENT_PRESENCE_FILE</code> 環境変数でモバイルプッシュ通知を抑制</li>
+            <li><span class="tag improve">改善</span> バンドル版 Bun ランタイムを 1.4 にアップグレード</li>
+            <li><span class="tag fix">修正</span> カスタム <code>ANTHROPIC_BASE_URL</code> でプロンプトキャッシュが機能しない問題</li>
+            <li><span class="tag fix">修正</span> ネットワークドライブ上でファイルが切り詰められる Write/Edit バグ</li>
+          </ul>
+          <div class="impact"><strong>実務インパクト：</strong>/config コマンドにより設定変更が対話中にその場で完結。リモートオフィス環境でのネットワークドライブ利用が安定化。</div>
+        </div>
+      </div>
+
+      <!-- v2.1.179 -->
+      <div class="version-block">
+        <div class="version-header">
+          <span class="version-num">v2.1.179</span>
+          <span class="version-date">2026-06-16</span>
+          <span class="tag fix">バグ修正</span>
+        </div>
+        <div class="card">
+          <ul class="item-list">
+            <li><span class="tag fix">修正</span> ストリーム途中の接続切断でそれまでの応答が保持されるよう改善</li>
+            <li><span class="tag fix">修正</span> WSL2 でのマウスホイールスクロール</li>
+            <li><span class="tag fix">修正</span> サンドボックス glob パターンがセッションを利用不能にする問題</li>
+            <li><span class="tag fix">修正</span> Windows Terminal での複数 UI レンダリング不具合</li>
+          </ul>
+          <div class="impact"><strong>実務インパクト：</strong>不安定なネットワーク環境での長文生成が中断しても入力済み内容が消えなくなり、WSL2 ユーザーの操作性が向上。</div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+
+    <!-- Codex -->
+    <h3 style="font-size:16px; color:var(--accent2); margin:32px 0 16px; letter-spacing:0.5px;">■ Codex（OpenAI）</h3>
+    <div class="notice">Codex 公式 Changelog（<a href="https://developers.openai.com/codex/changelog" target="_blank">developers.openai.com/codex/changelog</a>）は認証が必要なため WebFetch 不可。以下は <a href="https://releasebot.io/updates/openai/codex" target="_blank">releasebot.io</a> および <a href="https://www.developersdigest.tech/blog/codex-changelog-june-2026" target="_blank">Developers Digest</a> を参照した情報です。</div>
+
+    <div class="card">
+      <div class="version-header">
+        <span class="version-date">2026-06-22</span>
+        <span class="tag improve">改善</span>
+        <span class="tag fix">修正</span>
+      </div>
+      <ul class="item-list">
+        <li><span class="tag improve">改善</span> マーケットプレイス プラグインマニフェストのフォールバックサポートを追加</li>
+        <li><span class="tag fix">修正</span> 子 AGENTS.md のプロンプト実験コードを削除（安定性向上）</li>
+      </ul>
+      <div class="impact"><strong>実務インパクト：</strong>プラグイン統合の信頼性が向上し、マニフェストの欠損時でもフォールバックで動作継続できるようになった。</div>
+    </div>
+
+    <div class="card">
+      <div class="version-header">
+        <span class="version-date">2026年6月前半（参考）</span>
+        <span class="tag new">新機能</span>
+      </div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:12px;">期間外（6/1〜6/12）の主要機能（本週との比較参照用）</p>
+      <ul class="item-list">
+        <li><span class="tag new">新機能</span> Computer Use が macOS・Windows で利用可能に（ネイティブデスクトップアプリ操作）</li>
+        <li><span class="tag new">新機能</span> 職種別プラグイン 6種類（62アプリ・110スキル対応）を6月2日に公開</li>
+        <li><span class="tag new">新機能</span> Sites プラグインでウェブアプリ・ダッシュボードを作成・OpenAI ホストで公開</li>
+        <li><span class="tag improve">改善</span> Browser 操作速度を最大 2× 向上（CDP・DOM スナップショット最適化）</li>
+        <li><span class="tag new">新機能</span> Record &amp; Replay（macOS）：デモ操作を録画してスキルとして再利用</li>
+      </ul>
+    </div>
+
+  </div><!-- /section 1 -->
+
+  <!-- ========== SECTION 2: AI技術記事 ========== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon teal">📄</div>
+      <h2>2. AI技術記事（Zenn / Qiita）</h2>
+      <span class="count">6 articles</span>
+    </div>
+
+    <div class="article-card">
+      <h3><a href="https://zenn.dev/muramasa0228/articles/2026-06-20-mcp-zenn-pipeline" target="_blank">Claude Code と MCP で「記事を書く→Zenn公開→経歴に蓄積」を自動化した</a></h3>
+      <div class="article-meta">
+        <span>📅 2026-06-20</span>
+        <span>📍 Zenn</span>
+        <span class="tag new">MCP</span>
+        <span class="tag new">自動化</span>
+      </div>
+      <p class="summary-text">
+        Claude Code と MCP を連携させ、記事執筆・Zenn 公開・職務経歴書への自動蓄積まで一気通貫で自動化するパイプラインを構築。記事自体もそのパイプラインで公開された実証例。MCP サーバーとして Zenn API・ファイルシステムを組み合わせることで、コーディング以外のナレッジワークにも AI エージェントを適用する設計パターンを示す。
+      </p>
+      <span class="audience-badge">→ コンテンツ作成を効率化したいエンジニア・テクニカルライター</span>
+    </div>
+
+    <div class="article-card">
+      <h3><a href="https://zenn.dev/genda_jp/articles/16d35ffa464d65" target="_blank">Claude Code サブエージェントのネスト機能で .claude/agents/ の定義が効いた話</a></h3>
+      <div class="article-meta">
+        <span>📅 2026-06-18（推定）</span>
+        <span>📍 Zenn</span>
+        <span class="tag new">サブエージェント</span>
+        <span class="tag new">Claude Code</span>
+      </div>
+      <p class="summary-text">
+        v2.1.172 で対応した最大5段階のエージェントネストを実地検証。<code>.claude/agents/</code> ディレクトリに配置したエージェント定義が孫エージェントにも伝播することを確認し、役割別モデル使い分け（重い推論タスクには Fable 5、軽作業には Haiku 4.5 等）の設計パターンを解説。実際のワークフロー構成例と各ネスト段での動作ログを掲載。
+      </p>
+      <span class="audience-badge">→ Claude Code でマルチエージェントシステムを構築したい開発者</span>
+    </div>
+
+    <div class="article-card">
+      <h3><a href="https://qiita.com/saitoko/items/26250481df51c2bab83e" target="_blank">Claude Code 週次アップデートまとめ（2026/06/20週）</a></h3>
+      <div class="article-meta">
+        <span>📅 2026-06-20週</span>
+        <span>📍 Qiita</span>
+        <span class="tag improve">アップデート追跡</span>
+      </div>
+      <p class="summary-text">
+        Claude Code の週次リリース（v2.1.183〜v2.1.186）を横断的にまとめたウィークリーレポート記事。Auto モードの破壊的コマンドブロック、/config コマンドの追加、MCP CLI 認証などの変更点を実際の動作キャプチャ付きで解説。変更が実務にどう影響するかの考察も充実。
+      </p>
+      <span class="audience-badge">→ Claude Code を日常的に使うエンジニア全般</span>
+    </div>
+
+    <div class="article-card">
+      <h3><a href="https://qiita.com/kai_kou/items/81cee59a85d82535e986" target="_blank">Claude Code 6月新機能 — 5段階エージェントと /cd コマンドで自律開発を実現する</a></h3>
+      <div class="article-meta">
+        <span>📅 2026-06-中旬</span>
+        <span>📍 Qiita</span>
+        <span class="tag new">エージェント</span>
+        <span class="tag new">実装</span>
+      </div>
+      <p class="summary-text">
+        ネストサブエージェント5段階対応（v2.1.172）と /cd コマンドを使った大規模タスクの分割戦略を解説。「設計→実装→テスト→PR 作成」を各エージェントに割り当てるアーキテクチャ例を図解付きで紹介し、実際の開発速度測定結果（単体比3〜5倍のタスク消化速度）を報告。具体的な CLAUDE.md 設計方針も掲載。
+      </p>
+      <span class="audience-badge">→ 自律開発エージェントの設計を検討している上級エンジニア</span>
+    </div>
+
+    <div class="article-card">
+      <h3><a href="https://zenn.dev/kairosai/articles/aa04d8a4c13003" target="_blank">2026年6月、AIが「予約実行」する時代へ：ChatGPT/Claude/Gemini のスケジュール行をコードで設計する</a></h3>
+      <div class="article-meta">
+        <span>📅 2026-06-中旬</span>
+        <span>📍 Zenn</span>
+        <span class="tag new">スケジュール実行</span>
+        <span class="tag new">エージェント設計</span>
+      </div>
+      <p class="summary-text">
+        OpenAI Scheduled Tasks（6/17 発表）・Claude Code on the Web スケジュール機能・Gemini Scheduled Actions を横断比較し、毎朝AIニュース収集→要約→保存を行う定期タスクの Python 実装例を示す。スケジュール実行エージェントを「スケジュール層・処理層・出力層」の3層アーキテクチャで捉える設計パターンを提唱し、実際のコードと実行ログを掲載。
+      </p>
+      <span class="audience-badge">→ 定期バッチ処理やモニタリングに AI を組み込みたいエンジニア</span>
+    </div>
+
+    <div class="article-card">
+      <h3><a href="https://zenn.dev/kent_kamome/articles/4955d3f10940f9" target="_blank">中国のAIモデルを実用目線で整理する（2026年6月）</a></h3>
+      <div class="article-meta">
+        <span>📅 2026-06-中旬</span>
+        <span>📍 Zenn</span>
+        <span class="tag improve">比較検証</span>
+      </div>
+      <p class="summary-text">
+        DeepSeek V3・Qwen 3・Kimi 2 など中国勢フロンティアモデルを、コーディング・推論・長文理解・API コスト の4軸で実際にベンチマーク測定。米国モデルとの性能差が縮まる一方でデータ所在・利用規約リスクを整理し、ハイブリッド活用（秘匿データは国内/公開データは中国モデル）の判断フローを提示。
+      </p>
+      <span class="audience-badge">→ コスト削減のため中国モデル採用を検討している技術リード・PMT</span>
+    </div>
+
+  </div><!-- /section 2 -->
+
+  <!-- ========== SECTION 3: 一般AIニュース ========== -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon red">🌐</div>
+      <h2>3. 一般的なAIニュース（企業動向・世界情勢）</h2>
+      <span class="count">5 news</span>
+    </div>
+
+    <div class="news-card">
+      <div class="card-meta">
+        <span class="tag news">M&A</span>
+        <span style="font-size:12px; color:var(--muted);">2026-06-16</span>
+      </div>
+      <h3>SpaceX、AIコーディングスタートアップ Cursor を600億ドルで買収合意</h3>
+      <div class="news-fact">
+        📌 事実：SpaceX が Cursor の開発元 Anysphere を全株式交換で600億ドルで買収することに合意（6月16日発表）。SpaceX IPO（6月12日）直後のディールで、VC 投資家向け買収として史上最大規模。Cursor は年間売上高10億ドル超（2025年11月）を達成しており、Q3 クローズ予定。
+      </div>
+      <div class="news-implication">
+        💡 示唆：<strong>AIコーディングツール市場の覇権争いが宇宙・防衛産業まで巻き込んだ。</strong>Musk 傘下の xAI と SpaceX の統合が進み、Copilot・Cursor・Claude Code の三極構造に新たな競争圧力が加わる。エンタープライズ向け SaaS との連携戦略が焦点になると見られる。
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted);">
+        出典：<a href="https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/" target="_blank">TechCrunch</a> ／ <a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank">CNBC</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="card-meta">
+        <span class="tag news">海外展開</span>
+        <span style="font-size:12px; color:var(--muted);">2026-06-17</span>
+      </div>
+      <h3>Anthropic、ソウルオフィスを開設——NAVER・Samsung SDS ら大手と連携</h3>
+      <div class="news-fact">
+        📌 事実：Anthropic が6月17日に韓国・ソウルオフィスを開設（アジア太平洋3拠点目、東京・バンガロールに次ぐ）。NAVER（全社エンジニアリング組織へ Claude Code 展開）・Samsung SDS・LG CNS・Nexon・Hanwha Solutions・Channel Corp との連携を発表。科学技術情報通信部とAI安全に関する MOU を締結。60名の研究者（KAIST・延世大・POSTECH 等）にも Claude を提供予定。
+      </div>
+      <div class="news-implication">
+        💡 示唆：<strong>同時期に発動した米輸出規制（Mythos 5/Fable 5 の外国人アクセス制限）という逆風の中での開設は、韓国市場への長期的コミットを示すと見られる。</strong>韓国チーム向け Claude Code 導入事例が今後増加し、日本含むアジア全域での採用加速に繋がる可能性がある。
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted);">
+        出典：<a href="https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem" target="_blank">Anthropic 公式</a> ／ <a href="https://www.koreatimes.co.kr/amp/business/tech-science/20260618/anthropic-opens-seoul-office-to-expand-ties-with-korean-ai-ecosystem" target="_blank">Korea Times</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="card-meta">
+        <span class="tag news">国際政治</span>
+        <span style="font-size:12px; color:var(--muted);">2026-06-17</span>
+      </div>
+      <h3>G7 サミットに OpenAI・Anthropic・Google DeepMind CEO が出席</h3>
+      <div class="news-fact">
+        📌 事実：フランスで開催された G7 サミットに Sam Altman（OpenAI）・Dario Amodei（Anthropic）・Demis Hassabis（Google DeepMind）らが参加。トランプ大統領ら首脳との昼食会が設けられ、AI 安全・輸出管理・産業政策が議題となった。
+      </div>
+      <div class="news-implication">
+        💡 示唆：<strong>AI 企業が外交の主要アクターとして定着した節目。</strong>G7 での議論が今後の輸出規制緩和・国際標準策定に影響すると見られる。日本・欧州のAI規制政策への波及効果に注目。
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted);">
+        出典：<a href="https://www.cnbc.com/2026/06/17/g7-trump-ai-tech-leaders-openai-anthropic-google.html" target="_blank">CNBC</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="card-meta">
+        <span class="tag news">価格変更</span>
+        <span style="font-size:12px; color:var(--muted);">2026-06-23</span>
+      </div>
+      <h3>Claude Fable 5、Pro/Max/Team/Enterprise の無料窓が終了——使用クレジット制に移行</h3>
+      <div class="news-fact">
+        📌 事実：6月9日から Pro/Max/Team/Enterprise プランで追加費用なしで提供されていた Claude Fable 5 が、6月22日をもって無料アクセス窓を終了。6月23日以降は使用クレジットが必要（API 料金：入力 $10/Mtok、出力 $50/Mtok、Opus 4.8 の約2倍）。Anthropic は容量次第で標準プランへ再度組み込む意向を示しているが、日程は未定。
+      </div>
+      <div class="news-implication">
+        💡 示唆：<strong>最強モデルへのアクセスが実質有料化され、企業向けコスト管理が必要になった。</strong>Fable 5 が必要なタスクとそうでないタスクのモデル使い分け設計（コスト最適化）が今後の重要スキルになると見られる。
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted);">
+        出典：<a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank">Anthropic 公式</a> ／ <a href="https://claudefa.st/blog/models/claude-fable-5-mythos-5" target="_blank">claudefa.st</a>
+      </div>
+    </div>
+
+    <div class="news-card">
+      <div class="card-meta">
+        <span class="tag news">モデル競争</span>
+        <span style="font-size:12px; color:var(--muted);">2026-06-下旬（見込み）</span>
+      </div>
+      <h3>GPT-5.6・Gemini 3.5 Pro GA が6月末に集中——フロンティアモデル競争が最高潮</h3>
+      <div class="news-fact">
+        📌 事実：OpenAI GPT-5.6 が6月末に向けてカナリアテスト中（リリース確率89%と予測市場が評価、OpenAI は日程未確認）。Google Gemini 3.5 Pro GA は6月23〜30日を見込み、2Mトークンコンテキスト・Deep Think 推論モードを搭載予定（未確認）。Anthropic Claude Fable 5 は既存ユーザー向け有料化と同時期に、Mythos 5 は限定公開中。
+      </div>
+      <div class="news-implication">
+        💡 示唆：<strong>主要3社のフラッグシップモデルが同一週に競合する可能性があり、ベンチマーク比較が急速に更新される見込み。</strong>モデル選定基準を価格性能比・コンテキスト長・推論能力の多軸で再評価するタイミング。
+      </div>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted);">
+        出典：<a href="https://andrew.ooo/answers/gemini-3-5-pro-ga-vs-claude-fable-5-vs-gpt-5-6-late-june-2026/" target="_blank">andrew.ooo</a> ／ <a href="https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos" target="_blank">Centerbit（一部未確認情報を含む）</a>
+      </div>
+    </div>
+
+  </div><!-- /section 3 -->
+
+  <!-- ========== Sources ========== -->
+  <div class="sources">
+    <h2>全出典リスト</h2>
+    <ol>
+      <li>Claude Code 公式 Changelog — <a href="https://code.claude.com/docs/en/changelog" target="_blank">https://code.claude.com/docs/en/changelog</a></li>
+      <li>Claude Code Changelog (raw) — <a href="https://raw.githubusercontent.com/anthropics/claude-code/refs/heads/main/CHANGELOG.md" target="_blank">https://raw.githubusercontent.com/anthropics/claude-code/refs/heads/main/CHANGELOG.md</a></li>
+      <li>Releasebot — Anthropic Claude Code 2026年6月 — <a href="https://releasebot.io/updates/anthropic/claude-code" target="_blank">https://releasebot.io/updates/anthropic/claude-code</a></li>
+      <li>Developers Digest — Codex Changelog June 2026 — <a href="https://www.developersdigest.tech/blog/codex-changelog-june-2026" target="_blank">https://www.developersdigest.tech/blog/codex-changelog-june-2026</a></li>
+      <li>OpenAI Codex Changelog（要認証） — <a href="https://developers.openai.com/codex/changelog" target="_blank">https://developers.openai.com/codex/changelog</a></li>
+      <li>Releasebot — OpenAI Codex 2026年6月 — <a href="https://releasebot.io/updates/openai/codex" target="_blank">https://releasebot.io/updates/openai/codex</a></li>
+      <li>Nerova AI — OpenAI Codex Plugins and Sites Launch (2026-06-02) — <a href="https://nerova.ai/news/openai-codex-plugins-sites-knowledge-work-june-2-2026" target="_blank">https://nerova.ai/news/openai-codex-plugins-sites-knowledge-work-june-2-2026</a></li>
+      <li>Zenn — Claude Code と MCP で執筆→公開→蓄積を自動化 — <a href="https://zenn.dev/muramasa0228/articles/2026-06-20-mcp-zenn-pipeline" target="_blank">https://zenn.dev/muramasa0228/articles/2026-06-20-mcp-zenn-pipeline</a></li>
+      <li>Zenn — Claude Code サブエージェントネスト機能 — <a href="https://zenn.dev/genda_jp/articles/16d35ffa464d65" target="_blank">https://zenn.dev/genda_jp/articles/16d35ffa464d65</a></li>
+      <li>Qiita — Claude Code 週次アップデートまとめ（2026/06/20週） — <a href="https://qiita.com/saitoko/items/26250481df51c2bab83e" target="_blank">https://qiita.com/saitoko/items/26250481df51c2bab83e</a></li>
+      <li>Qiita — Claude Code 6月新機能 5段階エージェントと/cd — <a href="https://qiita.com/kai_kou/items/81cee59a85d82535e986" target="_blank">https://qiita.com/kai_kou/items/81cee59a85d82535e986</a></li>
+      <li>Zenn — 2026年6月、AIが「予約実行」する時代へ — <a href="https://zenn.dev/kairosai/articles/aa04d8a4c13003" target="_blank">https://zenn.dev/kairosai/articles/aa04d8a4c13003</a></li>
+      <li>Zenn — 中国のAIモデルを実用目線で整理する（2026年6月） — <a href="https://zenn.dev/kent_kamome/articles/4955d3f10940f9" target="_blank">https://zenn.dev/kent_kamome/articles/4955d3f10940f9</a></li>
+      <li>TechCrunch — SpaceX to acquire Cursor for $60B — <a href="https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/" target="_blank">https://techcrunch.com/2026/06/16/spacex-to-acquire-cursor-for-60b-in-stock-days-after-blockbuster-ipo/</a></li>
+      <li>CNBC — SpaceX Cursor $60 billion acquisition — <a href="https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html" target="_blank">https://www.cnbc.com/2026/06/16/spacex-spcx-cursor-acquisition-ipo.html</a></li>
+      <li>Anthropic — Seoul office partnerships — <a href="https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem" target="_blank">https://www.anthropic.com/news/seoul-office-partnerships-korean-ai-ecosystem</a></li>
+      <li>Korea Times — Anthropic opens Seoul office — <a href="https://www.koreatimes.co.kr/amp/business/tech-science/20260618/anthropic-opens-seoul-office-to-expand-ties-with-korean-ai-ecosystem" target="_blank">https://www.koreatimes.co.kr/amp/business/tech-science/20260618/...</a></li>
+      <li>CNBC — G7 AI leaders summit — <a href="https://www.cnbc.com/2026/06/17/g7-trump-ai-tech-leaders-openai-anthropic-google.html" target="_blank">https://www.cnbc.com/2026/06/17/g7-trump-ai-tech-leaders-openai-anthropic-google.html</a></li>
+      <li>Anthropic — Claude Fable 5 and Mythos 5 — <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank">https://www.anthropic.com/news/claude-fable-5-mythos-5</a></li>
+      <li>claudefa.st — Claude Fable 5 Paywall June 22 — <a href="https://claudefa.st/blog/models/claude-fable-5-mythos-5" target="_blank">https://claudefa.st/blog/models/claude-fable-5-mythos-5</a></li>
+      <li>andrew.ooo — Gemini 3.5 Pro GA vs Claude Fable 5 vs GPT-5.6 — <a href="https://andrew.ooo/answers/gemini-3-5-pro-ga-vs-claude-fable-5-vs-gpt-5-6-late-june-2026/" target="_blank">https://andrew.ooo/answers/gemini-3-5-pro-ga-vs-claude-fable-5-vs-gpt-5-6-late-june-2026/</a></li>
+      <li>Centerbit — AI Rumors June 2026（未確認情報含む） — <a href="https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos" target="_blank">https://centerbit.co/en/blog/ai-rumors-june-2026-gpt-5-6-gemini-3-5-pro-claude-mythos</a></li>
+    </ol>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  AI技術動向 週次レポート ｜ 対象期間：2026-06-16〜2026-06-23 ｜ 発行：2026-06-23<br>
+  本レポートは公開情報・Web 検索に基づき自動生成されています。推測を含む情報には「と見られる」「未確認」等の表記をしています。
+</div>
+
+</body>
+</html>
